@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -14,7 +14,6 @@ namespace Website_.NET
     {
         string username = "";
         string FileName;
-        bool insidefile;
         string oldpath;
         string path;
 
@@ -23,18 +22,23 @@ namespace Website_.NET
         {
             if (Session["username"] != null)
             {
-               
-                username = Session["username"].ToString();
+                if (!IsPostBack)
+                {
+                    username = Session["username"].ToString();
+                    Session["currentpath"]= Session["username"].ToString();
+                }
+            }
+            Response.Write(username+"<br>");
+            if (!IsPostBack) //Used to Check whether the Page is loaded first time or not  
+            {
+                ListOfData(); //Custom Method Called
                 Loop_file_gridview();
             }
             Response.Write(username);
-            if (!IsPostBack) //Used to Check whether the Page is loaded first time or not  
-            {
-                ListOfData(); //Custom Method Called  
-            }
         }
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
+            Path_changed();
             Response.Clear();
             Response.ContentType = "application/octet-stream";
             Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument); //Used to append the filename at the time of Downloading  
@@ -42,13 +46,20 @@ namespace Website_.NET
             Response.End();
             // Response.Redirect("MainPage.aspx");
         }
+        protected void Path_changed()
+        {
+            username = Session["currentpath"].ToString();
+        }
         protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
-            insidefile = true;
+            //insidefile = true;
             path = e.CommandArgument.ToString();
             oldpath = Server.MapPath("~/MyUploads/" + username + "/");
-            username = Session["username"].ToString() +"/"+path.Substring(oldpath.Length, path.Length - oldpath.Length);
-            string currentpath = Server.MapPath("~/MyUploads/" + username + "/");
+            username = path.Substring(oldpath.Length, path.Length - oldpath.Length);
+            Session["currentpath"] = username;
+            string currentpath = Server.MapPath("~/MyUploads/" + username + "/");            
+            Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath+ "<br><br>"+ Session["username"].ToString());
+            
             //Response.Write(currentpath);
             DataTable dt_Infolder = new DataTable(); //Datatable is Created to Add Dynamic Columns
             dt_Infolder.Clear();
@@ -57,7 +68,7 @@ namespace Website_.NET
             dt_Infolder.Columns.Add("Type");
             GridView1.DataSource = dt_Infolder;
             GridView1.DataBind();
-            Response.Write(username);
+           // Response.Write(username);
             if (Directory.GetFiles(currentpath).Length == 0)
             {
                 Response.Write("<br><br><br><br><br><br><br> No Files in this folder");
@@ -74,8 +85,9 @@ namespace Website_.NET
             if (FileUpload1.HasFile) //If the used Uploaded a file  
             {
                 FileName = FileUpload1.FileName; //Name of the file is stored in local Variable  
-                FileUpload1.PostedFile.SaveAs(Server.MapPath("~/MyUploads/" + username + "/") + FileName); //File is saved in the Physical folder  
-                Response.Write("<br>" + username);
+                FileUpload1.PostedFile.SaveAs(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/") + FileName); //File is saved in the Physical folder  
+                Response.Write("<br><br><br><br>" + username);
+                username = Session["currentpath"].ToString();
             }
             ListOfData(); //Custom method is Called  
         }
@@ -101,14 +113,10 @@ namespace Website_.NET
                 }
                 GridView1.DataSource = dt1; // Setting the Values of DataTable to be Shown in Gridview  
                 GridView1.DataBind(); // Binding the Data  
-
+                Loop_file_gridview();
             }
             else
             {
-                if (insidefile == true)
-                {
-                    username= Session["username"].ToString() + "/" + path.Substring(oldpath.Length, path.Length - oldpath.Length);
-                }
 
                 var folder = Server.MapPath("~/MyUploads/" + username);
 
@@ -169,7 +177,7 @@ namespace Website_.NET
                 //string filesize1 = lastRow[1].ToString();
 
                 SqlConnection con1 = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                SqlCommand cmd1 = new SqlCommand("insert into " + username + " values(@username,@folder,@filename1,@filesize1)", con1);
+                SqlCommand cmd1 = new SqlCommand("insert into " + Session["username"].ToString() + " values(@username,@folder,@filename1,@filesize1)", con1);
                 cmd1.Parameters.AddWithValue("@username", user);
                 cmd1.Parameters.AddWithValue("@filename1", filename1);
                 cmd1.Parameters.AddWithValue("@folder", folder);
@@ -185,25 +193,34 @@ namespace Website_.NET
         }
         protected void Loop_file_gridview()
         {
-            var folder = Server.MapPath("~/MyUploads/"+username+"/");
-            DataTable dt_folder = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                            //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
-            dt_folder.Columns.Add("File");
-            dt_folder.Columns.Add("Type");
-
-            string filename;
-            string filetype;
-
-            foreach (string str in Directory.EnumerateDirectories(folder)) //Directory.GetFiles Method is used to Get the files from the Folder  
+            try
             {
-                
-                filename = str; //Getting the Name of the File    
-                filetype = "folder"; //Getting file Extension and Calling Custom Method  
-                dt_folder.Rows.Add(filename, filetype); //Adding Rows to the DataTable
-                
-                GridView2.DataSource = dt_folder; // Setting the Values of DataTable to be Shown in Gridview  
+                GridView2.DataSource = null;
                 GridView2.DataBind();
+                string folder = Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/");
+                DataTable dt_folder = new DataTable(); //Datatable is Created to Add Dynamic Columns  
+                                                       //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                dt_folder.Columns.Add("File");
+                dt_folder.Columns.Add("Type");
 
+                string filename;
+                string filetype;
+
+                foreach (string str in Directory.EnumerateDirectories(folder)) //Directory.GetFiles Method is used to Get the files from the Folder  
+                {
+
+                    filename = str; //Getting the Name of the File    
+                    filetype = "folder"; //Getting file Extension and Calling Custom Method  
+                    dt_folder.Rows.Add(filename, filetype); //Adding Rows to the DataTable
+
+                    GridView2.DataSource = dt_folder; // Setting the Values of DataTable to be Shown in Gridview  
+                    GridView2.DataBind();
+
+                }
+            }
+            catch(Exception e)
+            {
+                Response.Write(e+ "<br><br> No Folder inside current folder");
             }
         }
 
