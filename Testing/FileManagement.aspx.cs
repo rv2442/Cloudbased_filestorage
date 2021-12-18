@@ -268,7 +268,7 @@ namespace LoginPass
         protected void btnCreate_Click(object sender, EventArgs e)
         {
            
-            string directoryPath = Server.MapPath(string.Format("~/MyUploads/"+Session["username"]+"/{0}/", txtFolderName.Text.Trim()));
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/"+Session["currentPath"]+"/{0}/", txtFolderName.Text.Trim()));
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -277,12 +277,12 @@ namespace LoginPass
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory already exists.');", true);
             }
-        
+            ListOfData();
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            string directoryPath = Server.MapPath(string.Format("~/MyUploads/{0}/", txtFolderName.Text.Trim()));
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentPath"] + "/{0}/", txtFolderName.Text.Trim()));
             if (Directory.Exists(directoryPath))
             {
                 Directory.Delete(directoryPath);
@@ -291,6 +291,7 @@ namespace LoginPass
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory does not exist.');", true);
             }
+            ListOfData();
         }
     }
 }
