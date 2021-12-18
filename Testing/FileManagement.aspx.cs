@@ -8,9 +8,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Website_.NET
+namespace LoginPass
 {
-    public partial class grid : System.Web.UI.Page
+    public partial class WebForm2 : System.Web.UI.Page
     {
         string username = "";
         string FileName;
@@ -20,15 +20,16 @@ namespace Website_.NET
         //  string username = "user3";
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["username"] = "User1";
             if (Session["username"] != null)
             {
                 if (!IsPostBack)
                 {
                     username = Session["username"].ToString();
-                    Session["currentpath"]= Session["username"].ToString();
+                    Session["currentpath"] = Session["username"].ToString();
                 }
             }
-            Response.Write(username+"<br>");
+            Response.Write(username + "<br>");
             if (!IsPostBack) //Used to Check whether the Page is loaded first time or not  
             {
                 ListOfData(); //Custom Method Called
@@ -57,9 +58,9 @@ namespace Website_.NET
             oldpath = Server.MapPath("~/MyUploads/" + username + "/");
             username = path.Substring(oldpath.Length, path.Length - oldpath.Length);
             Session["currentpath"] = username;
-            string currentpath = Server.MapPath("~/MyUploads/" + username + "/");            
-            Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath+ "<br><br>"+ Session["username"].ToString());
-            
+            string currentpath = Server.MapPath("~/MyUploads/" + username + "/");
+            Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath + "<br><br>" + Session["username"].ToString());
+
             //Response.Write(currentpath);
             DataTable dt_Infolder = new DataTable(); //Datatable is Created to Add Dynamic Columns
             dt_Infolder.Clear();
@@ -68,7 +69,7 @@ namespace Website_.NET
             dt_Infolder.Columns.Add("Type");
             GridView1.DataSource = dt_Infolder;
             GridView1.DataBind();
-           // Response.Write(username);
+            // Response.Write(username);
             if (Directory.GetFiles(currentpath).Length == 0)
             {
                 Response.Write("<br><br><br><br><br><br><br> No Files in this folder");
@@ -97,7 +98,7 @@ namespace Website_.NET
             if ((FileName == ("")) || (FileName == null))
             {
                 DataTable dt1 = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                                //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                                                 //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
                 dt1.Columns.Add("File");
                 dt1.Columns.Add("Size");
                 dt1.Columns.Add("Type");
@@ -218,9 +219,9 @@ namespace Website_.NET
 
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Response.Write(e+ "<br><br> No Folder inside current folder");
+                Response.Write(e + "<br><br> No Folder inside current folder");
             }
         }
 
@@ -247,6 +248,49 @@ namespace Website_.NET
 
         protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
         {
+        }
+
+        protected void Back_Click(object sender, EventArgs e)
+        {
+           
+           path = Session["currentPath"].ToString();
+           int lastSlash = path.LastIndexOf('\\');
+           path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path;
+            Session["currentPath"] = path;
+            username = path;
+            ListOfData();
+        }
+
+        protected void New_folder_Click(object sender, EventArgs e)
+        {
+
+        }
+        protected void btnCreate_Click(object sender, EventArgs e)
+        {
+           
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/"+Session["username"]+"/{0}/", txtFolderName.Text.Trim()));
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory already exists.');", true);
+            }
+        
+        }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/{0}/", txtFolderName.Text.Trim()));
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath);
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory does not exist.');", true);
+            }
         }
     }
 }
