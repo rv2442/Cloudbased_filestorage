@@ -369,69 +369,130 @@ namespace Website_.NET
             list_folder = getfolderedata();
             if (list_file.Count != 0)
             {
-                table_share(data_arr,)
+                foreach (string file in list_file)
+                {
+                    
+                table_share(data_arr, Session["currentpath"].ToString() + "\\" + file, "file");
+                    
+                    
+                }
+
             }
 
             if (list_folder.Count != 0)
             {
                 foreach (string folder_path in list_folder)
                 {
-                    
-
+                    table_share(data_arr, folder_path, "folder");
                 }
             }
-        }
-        protected void table_share(string [] data_list, string path_share, string type) { 
-            foreach (string user in data_list)
+             
+            if((list_file.Count == 0) &&(list_folder.Count == 0))
             {
                 
-                string user_shared = user.Trim() + "_shared";
-                try
-                {
-                    SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                    SqlCommand cmd_share = new SqlCommand("create table " + user_shared + " (username varchar(25),filetype varchar(10),filepath varchar(1000),fileowner varchar(25)", con_share);
-                    con_share.Open();
-                    cmd_share.ExecuteNonQuery();
-                    con_share.Close();
-                }
-                catch (Exception ex)
-                {
-                    if (path_exists(user_shared,path_share)) 
+            }
+            
+        }
+        
+        public void table_share(string [] data_list, string path_share, string type) 
+        {
+            List<string> invalid_users = new List<string>();
+            SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            
+            foreach (string user in data_list)
+            {
+                if (User_exists(user.Trim())){
+
+                    string user_shared = user.Trim() + "_shared";
+                    try
                     {
-                        
-                    }
-                    else
-                    {
-                        SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                        SqlCommand cmd_share = new SqlCommand("insert into " + user_shared + " values(@username,@filetype,@filepath,@fileowner)", con_share);
-                        cmd_share.Parameters.AddWithValue("@username", user);
-                        cmd_share.Parameters.AddWithValue("@filetype", type);
-                        cmd_share.Parameters.AddWithValue("@filepath", path_share);
-                        cmd_share.Parameters.AddWithValue("@fileowner", Session["username"]);
+                        //SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                        SqlCommand cmd_share = new SqlCommand("create table " + user_shared + " (username varchar(25),filetype varchar(10),filepath varchar(1000),fileowner varchar(25))", con_share);
                         con_share.Open();
                         cmd_share.ExecuteNonQuery();
                         con_share.Close();
                     }
-                   
+                    catch (Exception ex)
+                    {
+
+                        if (path_exists(user_shared, path_share))
+                        {
+
+                        }
+                        else
+                        {
+                            con_share.Close();
+                            //SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                            SqlCommand cmd_share = new SqlCommand("insert into " + user_shared + " values(@username,@filetype,@filepath,@fileowner)", con_share);
+                            cmd_share.Parameters.AddWithValue("@username", user);
+                            cmd_share.Parameters.AddWithValue("@filetype", type);
+                            cmd_share.Parameters.AddWithValue("@filepath", path_share);
+                            cmd_share.Parameters.AddWithValue("@fileowner", Session["username"].ToString());
+                            con_share.Open();
+                            cmd_share.ExecuteNonQuery();
+                            con_share.Close();
+                            Response.Write("data added");
+                        }
+
+                    }
+                }
+                else
+                {
+                    invalid_users.Add(user.Trim());
+                }
+                
+            }
+            if (invalid_users.Count != 0)
+            {
+                Response.Write("invalid users are: <br>");
+                foreach(string invaliduser in invalid_users)
+                {
+                    Response.Write(invaliduser+"<br>");
                 }
             }
         }
         protected bool path_exists( string tablename, string file_path)
         {
             bool exists = false;
-            SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-            SqlCommand cmd_share = new SqlCommand("select * from "+tablename+" where  filepath=@filepath", con_share);
-            cmd_share.Parameters.AddWithValue("@filepath", file_path);
-            con_share.Open();
-            SqlDataReader data_share = cmd_share.ExecuteReader();
+            SqlConnection con_share1 = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlCommand cmd_share1 = new SqlCommand("select * from "+tablename+" where  filepath=@filepath", con_share1);
+            cmd_share1.Parameters.AddWithValue("@filepath", file_path);
+            con_share1.Open();
+            SqlDataReader data_share = cmd_share1.ExecuteReader();
             if (data_share.HasRows)
             {
                 exists = true;
+                con_share1.Close();
             }
             else
             {
                 exists = false;
+                con_share1.Close();
             }
+            
+            return exists;
+            
+        }
+        protected bool User_exists(string user)
+        {
+            bool exists = false;
+            SqlConnection con_user_exists = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlCommand cmd_user_exists = new SqlCommand("select * from cloudlogin where username=@username", con_user_exists);
+            cmd_user_exists.Parameters.AddWithValue("@username", user.Trim());
+            con_user_exists.Open();
+            SqlDataReader data_user_exists = cmd_user_exists.ExecuteReader();
+            
+            if (data_user_exists.HasRows)
+            {
+                exists = true;
+                con_user_exists.Close();
+            }
+            else
+            {
+                exists = false;
+                con_user_exists.Close();
+            }
+            
             return exists;
         }
     }
