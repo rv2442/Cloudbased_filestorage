@@ -8,9 +8,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace LoginPass
+namespace Website_.NET
 {
-    public partial class WebForm2 : System.Web.UI.Page
+    public partial class grid : System.Web.UI.Page
     {
         string username = "";
         string FileName;
@@ -70,7 +70,7 @@ namespace LoginPass
             GridView1.DataSource = dt_Infolder;
             GridView1.DataBind();
             // Response.Write(username);
-            if (Directory.GetFiles(currentpath).Length == 0)
+            if ((Directory.GetFileSystemEntries(currentpath).Length == 0)) 
             {
                 Response.Write("<br><br><br><br><br><br><br> No Files in this folder");
             }
@@ -102,7 +102,7 @@ namespace LoginPass
                 dt1.Columns.Add("File");
                 dt1.Columns.Add("Size");
                 dt1.Columns.Add("Type");
-                foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + username + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
+                foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
                 {
 
 
@@ -252,10 +252,10 @@ namespace LoginPass
 
         protected void Back_Click(object sender, EventArgs e)
         {
-           
-           path = Session["currentPath"].ToString();
-           int lastSlash = path.LastIndexOf('\\');
-           path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path;
+
+            path = Session["currentpath"].ToString();
+            int lastSlash = path.LastIndexOf('\\');
+            path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path;
             Session["currentPath"] = path;
             username = path;
             ListOfData();
@@ -263,12 +263,13 @@ namespace LoginPass
 
         protected void New_folder_Click(object sender, EventArgs e)
         {
+           
 
         }
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-           
-            string directoryPath = Server.MapPath(string.Format("~/MyUploads/"+Session["currentPath"]+"/{0}/", txtFolderName.Text.Trim()));
+
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/{0}/", txtFolderName.Text.Trim()));
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -278,20 +279,160 @@ namespace LoginPass
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory already exists.');", true);
             }
             ListOfData();
+
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentPath"] + "/{0}/", txtFolderName.Text.Trim()));
-            if (Directory.Exists(directoryPath))
+            List<string> list_file = new List<string>();
+            list_file = getfiledata();
+            List<string> list_folder = new List<string>();
+            list_folder = getfolderedata();
+            if (list_file.Count != 0)
             {
-                Directory.Delete(directoryPath);
+                foreach (string file_name in list_file)
+                {
+                    string filePath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/"+ file_name));
+                    
+                    File.Delete(filePath);
+                }
             }
-            else
+            
+            if (list_folder.Count !=0)
+            {
+                foreach (string folder_path in list_folder)
+                {
+                    //string folderpath = Server.MapPath(folder_path);
+                    if (Directory.Exists(folder_path))
+                    {
+                        Directory.Delete(folder_path,true);
+                    }
+                    
+                }
+            }
+
+            if((list_file.Count == 0) && (list_folder.Count == 0))
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory does not exist.');", true);
             }
             ListOfData();
+        }
+
+        protected List<string> getfiledata()
+        {
+            List<string> checkboxdata = new List<string>();
+            foreach (GridViewRow gvrow in GridView1.Rows)
+            {
+                var checkbox = gvrow.FindControl("CheckBox1") as CheckBox;
+                if (checkbox.Checked)
+                {
+                    //var filename = gvrow.FindControl("LinkButton1") as LinkButton;
+                    LinkButton filename= (LinkButton)gvrow.FindControl("LinkButton1");
+
+                    checkboxdata.Add(filename.Text);
+                }
+            }
+            /*string abc="";
+            foreach (string str in checkboxdata)
+            {
+                abc += "\n" + str;
+            }
+            Label1.Text = abc;*/
+            return checkboxdata;
+        }
+
+        protected List<string> getfolderedata()
+        {
+            List<string> checkboxdataforlist = new List<string>();
+            foreach (GridViewRow gvrow in GridView2.Rows)
+            {
+                var checkbox = gvrow.FindControl("CheckBox1") as CheckBox;
+                if (checkbox.Checked)
+                {
+                    //var filename = gvrow.FindControl("LinkButton1") as LinkButton;
+                    LinkButton folderpath = (LinkButton)gvrow.FindControl("LinkButton1");
+
+                    checkboxdataforlist.Add(folderpath.Text);
+                }
+            }
+            
+            Label1.Text = checkboxdataforlist.Count.ToString();
+            return checkboxdataforlist;
+        }
+        protected void btPopupLoad_Click(object sender, EventArgs e)
+        {
+            var data = usernames_shared.Value;
+            var data_arr = data.Split(',');
+            List<string> list_file = new List<string>();
+            list_file = getfiledata();
+            List<string> list_folder = new List<string>();
+            list_folder = getfolderedata();
+            if (list_file.Count != 0)
+            {
+                table_share(data_arr,)
+            }
+
+            if (list_folder.Count != 0)
+            {
+                foreach (string folder_path in list_folder)
+                {
+                    
+
+                }
+            }
+        }
+        protected void table_share(string [] data_list, string path_share, string type) { 
+            foreach (string user in data_list)
+            {
+                
+                string user_shared = user.Trim() + "_shared";
+                try
+                {
+                    SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                    SqlCommand cmd_share = new SqlCommand("create table " + user_shared + " (username varchar(25),filetype varchar(10),filepath varchar(1000),fileowner varchar(25)", con_share);
+                    con_share.Open();
+                    cmd_share.ExecuteNonQuery();
+                    con_share.Close();
+                }
+                catch (Exception ex)
+                {
+                    if (path_exists(user_shared,path_share)) 
+                    {
+                        
+                    }
+                    else
+                    {
+                        SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                        SqlCommand cmd_share = new SqlCommand("insert into " + user_shared + " values(@username,@filetype,@filepath,@fileowner)", con_share);
+                        cmd_share.Parameters.AddWithValue("@username", user);
+                        cmd_share.Parameters.AddWithValue("@filetype", type);
+                        cmd_share.Parameters.AddWithValue("@filepath", path_share);
+                        cmd_share.Parameters.AddWithValue("@fileowner", Session["username"]);
+                        con_share.Open();
+                        cmd_share.ExecuteNonQuery();
+                        con_share.Close();
+                    }
+                   
+                }
+            }
+        }
+        protected bool path_exists( string tablename, string file_path)
+        {
+            bool exists = false;
+            SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlCommand cmd_share = new SqlCommand("select * from "+tablename+" where  filepath=@filepath", con_share);
+            cmd_share.Parameters.AddWithValue("@filepath", file_path);
+            con_share.Open();
+            SqlDataReader data_share = cmd_share.ExecuteReader();
+            if (data_share.HasRows)
+            {
+                exists = true;
+            }
+            else
+            {
+                exists = false;
+            }
+            return exists;
         }
     }
 }
