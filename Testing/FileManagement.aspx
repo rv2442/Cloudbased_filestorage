@@ -9,8 +9,8 @@
     <style type="text/css">
         .auto-style1 {
             position: absolute;
-            top: 402px;
-            left: 9px;
+            top: 46px;
+            left: 453px;
             z-index: 1;
         }
         .auto-style2 {
