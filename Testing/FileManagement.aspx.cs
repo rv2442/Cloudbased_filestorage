@@ -389,7 +389,7 @@ namespace Website_.NET
              
             if((list_file.Count == 0) &&(list_folder.Count == 0))
             {
-                
+                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
             }
             
         }
@@ -401,8 +401,9 @@ namespace Website_.NET
             
             foreach (string user in data_list)
             {
-                if (User_exists(user.Trim())){
-
+                if (User_exists(user.Trim()))
+                {
+                    
                     string user_shared = user.Trim() + "_shared";
                     try
                     {
@@ -411,6 +412,24 @@ namespace Website_.NET
                         con_share.Open();
                         cmd_share.ExecuteNonQuery();
                         con_share.Close();
+                        if (path_exists(user_shared, path_share))
+                        {
+
+                        }
+                        else
+                        {
+                            con_share.Close();
+                            //SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                            SqlCommand cmd_share_add = new SqlCommand("insert into " + user_shared + " values(@username,@filetype,@filepath,@fileowner)", con_share);
+                            cmd_share_add.Parameters.AddWithValue("@username", user);
+                            cmd_share_add.Parameters.AddWithValue("@filetype", type);
+                            cmd_share_add.Parameters.AddWithValue("@filepath", path_share);
+                            cmd_share_add.Parameters.AddWithValue("@fileowner", Session["username"].ToString());
+                            con_share.Open();
+                            cmd_share_add.ExecuteNonQuery();
+                            con_share.Close();
+                            Response.Write("data added");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -438,13 +457,21 @@ namespace Website_.NET
                 }
                 else
                 {
-                    invalid_users.Add(user.Trim());
+                    if (invalid_users.Contains(user.Trim()))
+                    {
+                        
+                    }
+                    else
+                    {
+                        invalid_users.Add(user.Trim());
+                    }
+                    
                 }
                 
             }
             if (invalid_users.Count != 0)
             {
-                Response.Write("invalid users are: <br>");
+                //Response.Write("invalid users are: <br>");
                 foreach(string invaliduser in invalid_users)
                 {
                     Response.Write(invaliduser+"<br>");
