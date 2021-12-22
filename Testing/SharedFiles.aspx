@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SharedFiles.aspx.cs" Inherits="LoginPass.WebForm18" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Shared_page.aspx.cs" Inherits="Website_.NET.Shared_page" %>
 
 <!DOCTYPE html>
 
@@ -14,11 +14,11 @@
         }
         .auto-style4 {
             z-index: 1;
-            left: 699px;
-            top: 118px;
+            left: 643px;
+            top: 110px;
             position: absolute;
-            height: 133px;
-            width: 187px;
+            height: 291px;
+            width: 306px;
         }
         </style>
 </head>  
@@ -33,15 +33,16 @@
             <br />  
             <%--Gridview to Display the Available data with file Details--%><%--Generate the OnRowCommand Event Handler of the Gridview Control--%>  
             <br />
-            <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowCommand="GridView2_RowCommand" CssClass="auto-style4">
+            <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None"  OnRowCommand="GridView2_RowCommand" CssClass="auto-style4">
                 <AlternatingRowStyle BackColor="White" />
                 <Columns>
-                    <asp:TemplateField HeaderText="File Name">  
+                    <asp:BoundField DataField="foldername" HeaderText="Folder Name" />
+                    <asp:TemplateField  HeaderText="Path">  
                         <ItemTemplate>  
                             <asp:LinkButton ID="LinkButton1" runat="server"  CommandArgument='<%# Eval("File") %>' Text='<%# Eval("File") %>'></asp:LinkButton>  
                         </ItemTemplate>  
                     </asp:TemplateField>
-                    <asp:BoundField HeaderText="Type" />
+                    <asp:BoundField DataField="Owner" HeaderText="Owner" />
                 </Columns>
                 <EditRowStyle BackColor="#2461BF" />
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
@@ -56,7 +57,7 @@
             </asp:GridView>
         </div>  
         <asp:Button ID="Back" runat="server" CssClass="auto-style1" OnClick="Back_Click" Text="Back" style="height: 29px" />
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowCommand="GridView1_RowCommand" Width="513px">  
+            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowCommand="GridView1_RowCommand"  Width="530px" Height="295px">  
                 <AlternatingRowStyle BackColor="White" />  
                 <Columns>  
                     <%--Item Template is used to Add a custom link button whose Eval Binding is "File"--%>  
@@ -66,7 +67,9 @@
                         </ItemTemplate>  
                     </asp:TemplateField>  
                     <asp:BoundField DataField="Size" HeaderText="Size (KB)" />  
-                    <asp:BoundField DataField="Type" HeaderText="File Type with Extension" />  
+                    <asp:BoundField DataField="Type" HeaderText="File Type" />  
+                    <asp:BoundField  DataField="Owner" HeaderText="Owner" />  
+ 
                 </Columns>  
                 <EditRowStyle BackColor="#2461BF" />  
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />  
@@ -81,7 +84,7 @@
             </asp:GridView>  
 <br />
         <p>
-            &nbsp;</p>
+            &nbsp;&nbsp;</p>
     </form>  
 </body>  
 </html>
