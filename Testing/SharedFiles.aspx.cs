@@ -15,8 +15,8 @@ namespace Website_.NET
     {
         grid obj_extension = new grid();
         string username;
-        List<string> list_file_paths = new List<string>();
-        List<string> list_folder_paths = new List<string>();
+        static List<string> list_file_paths = new List<string>();
+        static List<string> list_folder_paths = new List<string>();
         SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
         string tablename;
         
@@ -24,10 +24,12 @@ namespace Website_.NET
         {
             if (!IsPostBack)
             {
-                Session["username"] = "User3";
+                Session["username"] = "User2";
                 path_exists();
                 Listoffiles_shared();
+                Session["currentpath_shared"] = "";
             }
+            
         }
 
         protected void Listoffolders_shared()
@@ -79,6 +81,8 @@ namespace Website_.NET
 
         protected void path_exists()
         {
+            list_file_paths.Clear();
+            list_folder_paths.Clear();
             List<string> invalid_paths = new List<string>();
             tablename = Session["username"].ToString() + "_shared";
             SqlCommand cmd_file_path_exists = new SqlCommand("select * from "+ tablename+" where filetype='file'", con);
@@ -118,6 +122,7 @@ namespace Website_.NET
             }
             con.Close();
 
+
             if (invalid_paths.Count != 0) 
             {
                 foreach (string path in invalid_paths)
@@ -139,21 +144,7 @@ namespace Website_.NET
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
-            //string owner = "";
-
-            //foreach (GridViewRow gvrow in GridView1.Rows)
-            //{
-
-            //    var linkbtn = gvrow.FindControl("LinkButton1") as LinkButton;
-
-            //    if (linkbtn.Text == e.CommandArgument.ToString())
-            //    {
-            //        //var filename = gvrow.FindControl("LinkButton1") as LinkButton;
-            //        LinkButton filename = (LinkButton)gvrow.FindControl("LinkButton1");
-            //        owner = gvrow.Cells[3].Text;
-            //        Response.Write(owner);
-            //    }
-            //}
+            
             string filepath = "";
             foreach (string str in list_file_paths)
             {
@@ -163,24 +154,28 @@ namespace Website_.NET
                 }
             }
             username = filepath;
-            Path_changed();
+            if (Session["currentpath_shared"].ToString().Length != 0)
+            {
+                username = Session["currentpath_shared"].ToString()+"\\"+e.CommandArgument.ToString();
+            }
+            Response.Write(username);
             Response.Clear();
             Response.ContentType = "application/octet-stream";
             Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument); //Used to append the filename at the time of Downloading  
-            Response.TransmitFile(Server.MapPath("~/MyUploads/" + username+"/"+e.CommandArgument.ToString())); //Used to Fetch the file from the Physical folder of Server  
+            Response.TransmitFile(Server.MapPath("~\\MyUploads\\" + username)); //Used to Fetch the file from the Physical folder of Server  
             Response.End();
-            
+
         }
-        
+
 
         protected void Path_changed()
         {
             
-            username = Session["currentpath_shared"].ToString();
         }
         protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
             //insidefile = true;
+            Back.Visible = true;
             username = e.CommandArgument.ToString();
             Session["currentpath_shared"] = username;
             string currentpath = Server.MapPath("~/MyUploads/" + username + "/");
@@ -278,6 +273,29 @@ namespace Website_.NET
 
         protected void Back_Click(object sender, EventArgs e)
         {
+            string path_og= Session["currentpath_shared"].ToString();
+            int index = path_og.LastIndexOf(@"\"); 
+            string new_path_back = path_og.Substring(0,index);
+            //Response.Write(new_path_back);
+            foreach (string str in list_folder_paths)
+            {
+                
+                    if (new_path_back.Contains(str))
+                    {
+                        Response.Write(new_path_back);
+                        Session["currentpath_shared"] = new_path_back;
+                        username = new_path_back;
+                        ListOfData();
+                    }
+                    else
+                    {
+                        Back.Visible = false;
+                        Session["currentpath_shared"] = "";
+                        Listoffiles_shared();
+
+                    }
+
+            }
 
         }
     }
