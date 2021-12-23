@@ -92,30 +92,35 @@ namespace Website_.NET
             SqlDataReader data_file_paths = cmd_file_path_exists.ExecuteReader();
             while (data_file_paths.Read())
             {
-                try 
+
+
+                if (File.Exists(Server.MapPath("~\\MyUploads\\" + data_file_paths[2].ToString())))
                 {
-                    string path = Server.MapPath("~\\MyUploads\\" + data_file_paths[2].ToString());
                     list_file_paths.Add(data_file_paths[2].ToString());
                 }
-                catch
+
+                else
                 {
                     invalid_paths.Add(data_file_paths[2].ToString());
                 }
+                
+
             }
             con.Close();
             con.Open();
             SqlDataReader data_folder_paths = cmd_folder_path_exists.ExecuteReader();
             while (data_folder_paths.Read())
             {
-                try 
+
+                if (Directory.Exists(data_folder_paths[2].ToString()))
                 {
                     var path = data_folder_paths[2].ToString();
                     var rootpath = Server.MapPath("~") + "\\MyUploads\\";
-                    path = path.Substring(rootpath.Length-1);
-                    var test = Server.MapPath("~\\MyUploads\\" + path);
+                    path = path.Substring(rootpath.Length - 1);
                     list_folder_paths.Add(path);
                 }
-                catch
+
+                else
                 {
                     invalid_paths.Add(data_folder_paths[2].ToString());
                 }
