@@ -1,54 +1,84 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using
 
-namespace LoginPass
+namespace test111
 {
-    public partial class WebForm2 : System.Web.UI.Page
+    public partial class WebForm1 : System.Web.UI.Page
     {
+        static string dbpwd, email, secanswer;
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-
-        protected void ChangePassBut_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new 
-                SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-            string username = Session["username"].ToString();
-            string dbpwd = Session["password"].ToString();
-            if (OldPass.Text != dbpwd)
+            SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlCommand cmd = new SqlCommand("select * from cloudlogin where username=@user", con);
+            cmd.Parameters.AddWithValue("@user", txtusername.Text);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
             {
-                Color.Text = "Incorrect Old Password";
-                Color.ForeColor = Color.Red;
-            }
-            else if (NewPass.Text == dbpwd)
-            {
-                Color.Text = "New password can not be same as Old Password";
-                Color.ForeColor = Color.Red;
-            }
-            else if (NewPass.Text != ConfPass.Text)
-            {
-                Color.Text = "Password and Confirm Password Doesnot Match";
-                Color.ForeColor = Color.Red;
+
+                while (dr.Read())
+                {
+                  
+                    secanswer = dr["secretkey"].ToString();
+                    email = dr["email"].ToString();
+                    dbpwd = dr["password"].ToString();
+                }
+                Panel1.Visible = true;
+                lbluser.Visible = false;
             }
             else
             {
-                SqlCommand cmd = new SqlCommand("update registration set password=@pwd where username = @user", con);
-               
-                cmd.Parameters.AddWithValue("@pwd", NewPass.Text);
-                cmd.Parameters.AddWithValue("@user", username);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-                Color.Text = "Password Changed Successfully";
-                Color.ForeColor = Color.Green;
+                lbluser.Visible = true;
+                Panel1.Visible = false;
+                txtusername.Text = "";
+                txtusername.Focus();
             }
+
+
+            con.Close();
+        }
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            if (txtsecanswer.Text == secanswer)
+            {
+                lblmsg.Text = "Your Password is " + dbpwd;
+
+                MailMessage Msg = new MailMessage();
+                // Sender e-mail address.
+                Msg.From = new MailAddress("akashitcs2017@gmail.com");
+                // Recipient e-mail address.
+                Msg.To.Add(email);
+                Msg.Subject = "Your Password ";
+                Msg.Body = "Hi Your Password is " + dbpwd;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.Credentials = new System.Net.NetworkCredential("cloudstorage636@gmail.com", "cloudstorage123");
+                smtp.EnableSsl = true;
+                smtp.Send(Msg);
+            }
+            else
+            {
+                lblmsg.Text = "Incorrect Security Answer";
+                txtsecanswer.Text = "";
+                txtsecanswer.Focus();
+            }
+        }
+
+        protected void txtsecanswer_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
