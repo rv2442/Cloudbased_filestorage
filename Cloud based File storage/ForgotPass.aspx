@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ForgotPass.aspx.cs" Inherits="LoginPass.WebForm2" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ForgotPass.aspx.cs" Inherits="test111.WebForm1" %>
 
 <!DOCTYPE html>
 
@@ -8,24 +8,28 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-        </div>
+    <div>
+    
+        Enter Username
+        <asp:TextBox ID="txtusername" runat="server"></asp:TextBox>
+&nbsp;<asp:Label ID="lbluser" runat="server" Font-Bold="True" ForeColor="Red" Text="Incorrect User Name" Visible="False"></asp:Label>
+    
+    </div>
         <p>
-            Enter Old Password
-            <asp:TextBox ID="OldPass" runat="server" style="z-index: 1; left: 188px; top: 51px; position: absolute"></asp:TextBox>
+            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Get" />
         </p>
-        <p>
-            Enter New Password<asp:TextBox ID="NewPass" runat="server" style="z-index: 1; left: 187px; top: 97px; position: absolute"></asp:TextBox>
-        </p>
-        <p>
-            Confirm Password<asp:TextBox ID="ConfPass" runat="server" style="z-index: 1; left: 187px; top: 142px; position: absolute"></asp:TextBox>
-        </p>
-        <p>
-            <asp:Button ID="ChangePassBut" runat="server" OnClick="ChangePassBut_Click" style="z-index: 1; left: 81px; top: 195px; position: absolute; width: 155px" Text="Change Password" />
-        </p>
-        <p>
-            <asp:Label ID="Color" runat="server" style="z-index: 1; left: 20px; top: 235px; position: absolute" Text="Label"></asp:Label>
-        </p>
+        <asp:Panel ID="Panel1" runat="server" BorderStyle="Solid" BorderWidth="2px" Height="149px" Visible="False" Width="490px">
+            Security Question: Enter the secret key provided to you<br />
+            <br />
+            Enter Security Answer:
+            <asp:TextBox ID="txtsecanswer" runat="server" OnTextChanged="txtsecanswer_TextChanged"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Get Password" style="height: 29px" />
+            <br />
+            <asp:Label ID="lblmsg" runat="server" ForeColor="Red"></asp:Label>
+        </asp:Panel>
     </form>
 </body>
 </html>
+
