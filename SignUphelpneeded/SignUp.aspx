@@ -118,6 +118,9 @@
           <asp:HiddenField ID="HiddenField1" runat="server" />
            <asp:HiddenField ID="HiddenField2" runat="server" />
            <asp:HiddenField ID="HiddenField3" runat="server" />
+   <script>
+        AcccessCodeBehindValue();
+    </script>
      <asp:Button ID="Button1" style="cursor: pointer" class="login" runat="server"  onclientclick="download()" OnClick="Button1_Click" Text="Login" />
 
   <div class="footer"> 
