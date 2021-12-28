@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -29,13 +29,13 @@ namespace Website_.NET
                     Session["currentpath"] = Session["username"].ToString();
                 }
             }
-            Response.Write(username + "<br>");
+            //Response.Write(username + "<br>");
             if (!IsPostBack) //Used to Check whether the Page is loaded first time or not  
             {
                 ListOfData(); //Custom Method Called
                 Loop_file_gridview();
             }
-            Response.Write(username);
+            //Response.Write(username);
         }
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
@@ -59,7 +59,7 @@ namespace Website_.NET
             username = path.Substring(oldpath.Length, path.Length - oldpath.Length);
             Session["currentpath"] = username;
             string currentpath = Server.MapPath("~/MyUploads/" + username + "/");
-            Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath + "<br><br>" + Session["username"].ToString());
+            //Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath + "<br><br>" + Session["username"].ToString());
 
             //Response.Write(currentpath);
             DataTable dt_Infolder = new DataTable(); //Datatable is Created to Add Dynamic Columns
@@ -72,10 +72,12 @@ namespace Website_.NET
             // Response.Write(username);
             if ((Directory.GetFiles(currentpath).Length == 0))
             {
-                Response.Write("<br><br><br><br><br><br><br> No Files in this folder");
+                //Label1.Visible = true;
+                //Label1.Text = " No files in this folder";
             }
             else
             {
+                //Label1.Visible = false;
                 ListOfData();
             }
             if (Directory.GetDirectories(currentpath).Length == 0)
@@ -92,7 +94,7 @@ namespace Website_.NET
             {
                 FileName = FileUpload1.FileName; //Name of the file is stored in local Variable  
                 FileUpload1.PostedFile.SaveAs(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/") + FileName); //File is saved in the Physical folder  
-                Response.Write("<br><br><br><br>" + username);
+                //Response.Write("<br><br><br><br>" + username);
                 username = Session["currentpath"].ToString();
             }
             ListOfData(); //Custom method is Called  
@@ -227,7 +229,7 @@ namespace Website_.NET
             }
             catch (Exception e)
             {
-                Response.Write("<br><br> No Folder inside current folder");
+              //  Response.Write("<br><br> No Folder inside current folder");
             }
         }
 
@@ -314,7 +316,7 @@ namespace Website_.NET
                         Directory.Delete(Server.MapPath("~\\MyUploads\\"+Session["currentpath"]+"\\"+folder_path), true);
                         
                     }
-                    Response.Write(folder_path);
+                    //Response.Write(folder_path);
                 }
             }
 
@@ -410,7 +412,7 @@ namespace Website_.NET
 
             if ((list_file.Count == 0) && (list_folder.Count == 0))
             {
-                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
+                //Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
             }
             else
             {
@@ -459,7 +461,7 @@ namespace Website_.NET
                             con_share.Open();
                             cmd_share_add.ExecuteNonQuery();
                             con_share.Close();
-                            Response.Write("data added");
+                            //Response.Write("data added");
                         }
                     }
                     catch 
@@ -481,7 +483,7 @@ namespace Website_.NET
                             con_share.Open();
                             cmd_share.ExecuteNonQuery();
                             con_share.Close();
-                            Response.Write("data added");
+                            //Response.Write("data added");
                         }
 
                     }
