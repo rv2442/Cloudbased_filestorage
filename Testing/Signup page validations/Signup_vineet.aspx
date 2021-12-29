@@ -73,6 +73,10 @@
         function nextpage() {
             window.location.href = "gmail_otp.aspx";
         }
+        function alert_first() {
+            alert("A secret key has been given to you please store it securely as it can be used to change your password");
+            nextpage();
+        }
 
         function downloadFile(data = "<%=Session["scrkey"].ToString()%>", fileName = "<%=txtusername.Text%>",type = "text/plain") {
           
@@ -100,7 +104,7 @@
                 window.URL.revokeObjectURL(a.href);
                 document.body.removeChild(a);
 
-                nextpage();
+                alert_first();
             }
             else {
                 //window.prompt(validation);
