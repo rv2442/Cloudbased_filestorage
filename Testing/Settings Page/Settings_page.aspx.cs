@@ -21,7 +21,7 @@ namespace Website_.NET
         {
             if (!IsPostBack)
             {
-                Session["username"] = "User1";
+                Session["username"] = "Rv2442";
                 usernametxt.Text = Session["username"].ToString();
                 string email=get_email();
                 emailtxt.Text = email;
@@ -32,7 +32,7 @@ namespace Website_.NET
             var saiz = DirSize(f);
             double temp = Convert.ToInt32(saiz)/1024/1024/10.24;
             saze = decimal.Round(Convert.ToDecimal(temp), 2, MidpointRounding.AwayFromZero);
-            Response.Write(saze);
+            //Response.Write(saze);
             auth =sql_check();
             if (auth)
             {
