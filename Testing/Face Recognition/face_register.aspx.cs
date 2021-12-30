@@ -14,7 +14,11 @@ namespace Website_.NET
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["username"] = "Soul";
+            if (Session["username"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+            
         }
         protected void hiddenbtn_Click(object sender, EventArgs e)
         {

@@ -11,8 +11,8 @@
 
            $(function () {
                Webcam.set({
-                   width: 1080,
-                   height: 606,
+                   width: 720,
+                   height: 420,
                    image_format: 'jpg',
                    jpg_quality: 90
                });

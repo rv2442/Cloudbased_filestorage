@@ -19,13 +19,18 @@ namespace Website_.NET
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["username"] = "soul";
+            
+            if( Session["username"]== null || Session["username"].ToString()=="" )
+            {
+                Response.Redirect("Login.aspx");
+            }
+           // Session["username"] = "soul";
         }
 
         protected void hiddenbtn_Click(object sender, EventArgs e)
         {
            var ab = hidden_img.Value;
-            Response.Write(ab);
+            //Response.Write(ab);
             string filePath = "D:\\face_rec\\face_rec\\test.jpg";
             File.WriteAllBytes(filePath, Convert.FromBase64String(ab));
             var stdOutput = new StringBuilder();
@@ -48,8 +53,8 @@ namespace Website_.NET
                 p.BeginOutputReadLine();
                 p.WaitForExit(15000);
                 p.Kill();
-                Response.Write("<br><br> data: " + stdOutput.ToString());
-                Response.Write("<br><br> error: " + stderror.ToString());
+                //Response.Write("<br><br> data: " + stdOutput.ToString());
+                //Response.Write("<br><br> error: " + stderror.ToString());
                 
             }
             catch
@@ -60,7 +65,9 @@ namespace Website_.NET
             {
                 if (stdOutput.ToString().Trim().ToLower() == Session["username"].ToString().ToLower())
                 {
-                    Response.Write("<script type='text/javascript'>alert('Logged in Sucessfully');</script>");
+                    //ClientScript.RegisterStartupScript(GetType(), "alert", "alert('Logged in Successfully');", true);
+                    Response.Redirect("MainPage.aspx");
+
                 }
                 else
                 {
