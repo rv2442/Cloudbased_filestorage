@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pygments</name>
+    </assembly>
+    <members>
+        <member name="P:Pygments.Formatter.Aliases">
+            <summary>
+                A list of fnmatch patterns that match filenames for which this formatter can produce output. The patterns in this
+                list should be unique among all formatters.
+            </summary>
+        </member>
+        <member name="P:Pygments.Formatter.Filenames">
+            <summary>
+                A list of short, unique identifiers that can be used to lookup the formatter from a list, e.g. using
+                <see cref="M:Pygments.Pygments.Formatters.GetFormatterByName(System.String,Pygments.IFormatterOptions)" />.
+            </summary>
+        </member>
+        <member name="P:Pygments.Formatter.Name">
+            <summary>
+                Full name for the formatter, in human-readable form.
+            </summary>
+        </member>
+        <member name="M:Pygments.Formatter.GetStyleDefs">
+            <summary>
+                Returns statements or declarations suitable to define the current style for subsequent highlighted
+                text (e.g. CSS classes in the HTMLFormatter).
+            </summary>
+            <returns>The style definition for the formmater.</returns>
+        </member>
+        <member name="M:Pygments.Formatter.GetStyleDefs(System.String)">
+            <summary>
+                Returns statements or declarations suitable to define the current style for subsequent highlighted
+                text (e.g. CSS classes in the HTMLFormatter).
+            </summary>
+            <param name="arg">The optional argument arg can be used to modify the generation and is formatter dependent (it is standardized because it can be given on the command line).</param>
+            <returns>The style definition for the formmater.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Pygments.HtmlFormatterOptions" -->
+        <member name="P:Pygments.HtmlFormatterOptions.AnchorLineNos">
+            <summary>
+                If set to True, will wrap line numbers in &lt;a&gt; tags. Used in combination with linenos and lineanchors.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.ClassPrefix">
+            <summary>
+                Since the token types use relatively short class names, they may clash with some of your own class names. In this
+                case you can use the classprefix option to give a string to prepend to all Pygments-generated CSS class names for
+                token types. Note that this option also affects the output of get_style_defs().
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.CssClass">
+            <summary>
+                CSS class for the wrapping &lt;div&gt; tag (default: 'highlight'). If you set this option, the default selector for
+                get_style_defs() will be this
+                class.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.CssFile">
+            <summary>
+                If the full option is true and this option is given, it must be the name of an external file. If the filename does
+                not include an absolute path, the file’s path will be assumed to be relative to the main output file’s path, if the
+                latter can be found. The stylesheet is then written to this file instead of the HTML file.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.CssStyles">
+            <summary>
+                Inline CSS styles for the wrapping  &lt;div&gt; tag (default: '').
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.Filename">
+            <summary>
+                A string used to generate a filename when rendering  &lt;pre&gt; blocks, for example if displaying source code.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.Full">
+            <summary>
+                Tells the formatter to output a “full” document, i.e. a complete self-contained document (default: False).
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.HlLines">
+            <summary>
+                Specify a list of lines to be highlighted.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.LineAnchors">
+            <summary>
+                If set to a nonempty string, e.g. foo, the formatter will wrap each output line in an anchor tag with a name of
+                foo-linenumber. This allows easy linking to certain lines.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.LineNos">
+            <summary>
+                If set to 'table', output line numbers as a table with two cells, one containing the line numbers, the other the
+                whole code. This is copy-and-paste-friendly, but may cause alignment problems with some browsers or fonts. If set
+                to 'inline', the line numbers will be integrated in the &lt;pre&gt; tag that contains the code (that setting is new
+                in Pygments 0.8).
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.LineNoSpecial">
+            <summary>
+                If set to a number n > 1, only every nth line number is printed.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.LineNoStart">
+            <summary>
+                The line number for the first line (default: 1).
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Pygments.HtmlFormatterOptions.LineSeperator" -->
+        <member name="P:Pygments.HtmlFormatterOptions.LineSpans">
+            <summary>
+                If set to a nonempty string, e.g. foo, the formatter will wrap each output line in a span tag with an id of
+                foo-linenumber. This allows easy access to lines via javascript.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.NoBackground">
+            <summary>
+                If set to True, the formatter won’t output the background color for the wrapping element (this automatically
+                defaults to False when there is no wrapping element [eg: no argument for the get_syntax_defs method given])
+                (default: False).
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Pygments.HtmlFormatterOptions.NoClasses" -->
+        <member name="P:Pygments.HtmlFormatterOptions.NoClobberCssfile">
+            <summary>
+                If cssfile is given and the specified file exists, the css file will not be overwritten. This allows the use of the
+                full option in combination with a user specified css file. Default is False.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.NoWrap">
+            <summary>
+                If set to True, don’t wrap the tokens at all, not even inside a
+                &lt;pre&gt; tag. This disables most other options (default: False).
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.PreStyles">
+            <summary>
+                Inline CSS styles for the  &lt;pre&gt; tag (default: '').
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.Style">
+            <summary>
+                The style to use, can be a string or a Style subclass (default: 'default'). This option has no effect if the
+                cssfile and noclobber_cssfile option are given and the file specified in cssfile exists.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.TagsFile">
+            <summary>
+                If set to the path of a ctags file, wrap names in anchor tags that link to their definitions. lineanchors should be
+                used, and the tags file should specify line numbers (see the -n option to ctags).
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.TagUrlFormat">
+            <summary>
+                A string formatting pattern used to generate links to ctags definitions. Available variables are %(path)s,
+                %(fname)s and %(fext)s. Defaults to an empty string, resulting in just #prefix-number links.
+            </summary>
+        </member>
+        <member name="P:Pygments.HtmlFormatterOptions.Title">
+            <summary>
+                If full is true, the title that should be used to caption the document (default: '').
+            </summary>
+        </member>
+        <member name="P:Pygments.LexerOptions.Encoding">
+            <summary>
+                If given, must be an encoding name (such as "utf-8"). This encoding will be used to convert the input string to
+                Unicode (if it is not already a Unicode string). The default is "guess".
+            </summary>
+        </member>
+        <member name="P:Pygments.LexerOptions.EnsureEnl">
+            <summary>
+                Make sure that the input ends with a newline (default: True). This is required for some lexers that consume input
+                linewise.
+            </summary>
+        </member>
+        <member name="P:Pygments.LexerOptions.StripAll">
+            <summary>
+                Strip all leading and trailing whitespace from the input (default: False).
+            </summary>
+        </member>
+        <member name="P:Pygments.LexerOptions.StripNl">
+            <summary>
+                Strip leading and trailing newlines from the input (default: True)
+            </summary>
+        </member>
+        <member name="P:Pygments.LexerOptions.TabSize">
+            <summary>
+                If given and greater than 0, expand tabs in the input (default: 0).
+            </summary>
+        </member>
+        <member name="M:Pygments.Pygments.Highlight(System.String,Pygments.Lexer,Pygments.Formatter)">
+            <summary>
+                This is the most high-level highlighting function. It combines lex and format in one function.
+            </summary>
+            <param name="code">The source code to be highlighted.</param>
+            <param name="lexer">The lexer instance to use to tokenize the code.</param>
+            <param name="formatter">The formmatter instance used to output the result.</param>
+            <returns>The syntax highlighted code.</returns>
+        </member>
+        <member name="M:Pygments.Pygments.Import(Microsoft.Scripting.Hosting.ScriptEngine)">
+            <summary>
+                Imports the pygments module into the Python engine.
+            </summary>
+            <param name="engine">The python engine Pygments should be imported within.</param>
+        </member>
+        <member name="M:Pygments.Pygments.Formatters.GetFormatterByName(System.String)">
+            <summary>
+                Return an instance of a <see cref="T:Pygments.Formatter" /> subclass that has alias in its aliases list. The formatter is
+                given the options at its instantiation.
+            </summary>
+            <param name="name">The alias of the returned formatter.</param>
+            <returns>A formmatter with alias <paramref name="name" />.</returns>
+            <exception cref="T:System.InvalidOperationException">Raised if no formatter with that alias is found.</exception>
+        </member>
+        <member name="M:Pygments.Pygments.Formatters.GetFormatterByName(System.String,Pygments.IFormatterOptions)">
+            <summary>
+                Return an instance of a <see cref="T:Pygments.Formatter" /> subclass that has alias in its aliases list. The formatter is
+                given the options at its instantiation.
+            </summary>
+            <param name="name">The alias of the returned formatter.</param>
+            <param name="options">Options to pass to the formatter on initialization.</param>
+            <returns>A formmatter with alias <paramref name="name" />.</returns>
+            <exception cref="T:System.InvalidOperationException">Raised if no formatter with that alias is found.</exception>
+        </member>
+        <member name="M:Pygments.Pygments.Lexers.GetLexerByName(System.String)">
+            <summary>
+                Return an instance of a Lexer subclass that has alias in its aliases list. The lexer is given the options at its
+                instantiation.
+            </summary>
+            <param name="name">The alias of the returned lexer.</param>
+            <returns>A lexer with alias <paramref name="name" />.</returns>
+            <exception cref="T:System.InvalidOperationException">Raised if no lexer with that alias is found.</exception>
+        </member>
+        <member name="M:Pygments.Pygments.Lexers.GetLexerByName(System.String,Pygments.ILexerOptions)">
+            <summary>
+                Return an instance of a Lexer subclass that has alias in its aliases list. The lexer is given the options at its
+                instantiation.
+            </summary>
+            <param name="name">The alias of the returned lexer.</param>
+            <param name="options">Options to pass to the lexer on initialization.</param>
+            <returns>A lexer with alias <paramref name="name" />.</returns>
+            <exception cref="T:System.InvalidOperationException">Raised if no lexer with that alias is found.</exception>
+        </member>
+        <member name="M:Pygments.Pygments.Styles.GetStyleByName(System.String)">
+            <summary>
+            Return a style class by its short name. The names of the builtin styles are listed in pygments.styles.STYLE_MAP.
+            </summary>
+            <param name="name">The short name of the returned style.</param>
+            <returns>A style with short name <paramref name="name" />.</returns>
+            <exception cref="T:System.InvalidOperationException">Raised if no style with that alias is found.</exception>
+        </member>
+        <member name="M:Pygments.Pygments.Styles.GetAllStyles">
+            <summary>
+            Return an enumeration over all registered style names.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Pygments.Lexer.Aliases">
+            <summary>
+                A list of short, unique identifiers that can be used to lookup the lexer from a list, e.g. using
+                <see cref="M:Pygments.Pygments.Lexers.GetLexerByName(System.String,Pygments.ILexerOptions)"/>.
+            </summary>
+        </member>
+        <member name="P:Pygments.Lexer.AliasFilenames">
+            <summary>
+                A list of fnmatch patterns that match filenames which may or may not contain content for this lexer. This list is
+                used by the guess_lexer_for_filename() function, to determine which lexers are then included in guessing the
+                correct one. That means that e.g. every lexer for HTML and a template language should include \*.html in this list.
+            </summary>
+        </member>
+        <member name="P:Pygments.Lexer.Filenames">
+            <summary>
+                A list of fnmatch patterns that match filenames which contain content for this lexer. The patterns in this list
+                should be unique among all lexers.
+            </summary>
+        </member>
+        <member name="P:Pygments.Lexer.MimeTypes">
+            <summary>
+                A list of MIME types for content that can be lexed with this lexer.
+            </summary>
+        </member>
+        <member name="P:Pygments.Lexer.Name">
+            <summary>
+                Full name for the lexer, in human-readable form.
+            </summary>
+        </member>
+    </members>
+</doc>
