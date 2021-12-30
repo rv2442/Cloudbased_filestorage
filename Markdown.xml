@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Markdown</name>
+    </assembly>
+    <members>
+        <member name="P:Markdown.MarkdownOptions.EnableAttributes">
+            <summary>
+                Enable the conversion of attributes. Defaults to True, unless safe_mode is enabled, in which case the default is
+                False.
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.ExtensionConfigs">
+            <summary>
+                A dictionary of configuration settings for extensions.
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.ExtensionPaths">
+            <summary>
+                A list of extensions paths. For example "markdown.extensions.extra".
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.LazyOl">
+            <summary>
+                Ignore number of first item of ordered lists. Default: True
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.OutputFormat">
+            <summary>
+                Format of output.
+                Supported formats are:
+                * "xhtml1": Outputs XHTML 1.x.Default.
+                * "xhtml5": Outputs XHTML style tags of HTML 5
+                * "xhtml": Outputs latest supported version of XHTML(currently XHTML 1.1).
+                * "html4": Outputs HTML 4
+                * "html5": Outputs HTML style tags of HTML 5
+                * "html": Outputs latest supported version of HTML(currently HTML 4).
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.SmartEmphasis">
+            <summary>
+                Treat _connected_words_ intelligently Default: True
+            </summary>
+        </member>
+        <member name="P:Markdown.MarkdownOptions.TabLength">
+            <summary>
+                Length of tabs in the source. Default: 4
+            </summary>
+        </member>
+    </members>
+</doc>
