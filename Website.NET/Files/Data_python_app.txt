@@ -1,0 +1,27 @@
+B93842892,Sita,sitaram999@gmail.com,7853154632,Janakpuri,185000
+B46574347,Radhika,radhakrsna245@gmail.com,8765649435,Barsana,200000
+B327842343,Jahanva,jahanvanitai@gmail.com,8795346728,Govardhan,250000
+A97568575,Nitai,nitaichandra13@gmail.com,8653495672,Kolkata,250000
+A93853857,Adwait,adw2524@gmail.com,8945614896,Pandharpur,65000
+A93768362,Jagdish,jagdish8888@gmail.com,9764685376,Dwarka,189000
+A93573792,Tukaram,tukaramharidas@gmail.com,8649537642,Kolhapur,137000
+A85636734,Narottam,narottamthakur@gmail.com,9567648652,Navadveep,170000
+A74658947,Ram,ram999@gmail.com,897452176,Ayodhya,186000
+A74648291,Shyam,shyam888@gmail.com,897524613,Mathura,178000
+A73753468,Bivlamangal,bivlamangal@gmail.com,7965658249,Mathura,135000
+A64732434,Rajendra,raj2534@gmail.com,7896255647,Mumbai,135000
+A54844347,Harish,harish98@gmail.com,7653485264,Delhi,136000
+A47374848,Vaman,vaman12@gmail.com,8675247648,Bali,195000
+A46723264,Rishi,rsh263@gmail.com,7531684257,Mumbai,76500
+A43748536,Nimai,nimai15@gmail.com,7684359465,Kolkata,200000
+A42485283,Mihir,mihir363@gmail.com,9652464893,Mumbai,61000
+A36573476,Abhiram,abhiramthakur1@gmail.com,7864359167,Bengal,150000
+A35626533,Vinay,vn35353@gmail.com,9654879821,Nashik,63000
+A35573353,Aman,aman123@gmail.com,7562558914,Nagpur,46300
+A34647363,Damodar,bkdamodar@gmail.com,7659468235,Govardhan,300000
+A32623564,Vineet,78vineet@gmail.com,8452489516,Pune,36000
+A26576433,Bharat,bharatram@gnail.com,8627359465,Ayodhya,140000
+A24536274,Saurabh,Srbh7353@gmail.com,865247261,Pune,60500
+A24248248,Rasikanand,rasikanand@gmail.com,8884564698,Mumbai,25000
+A23647246,Rajan,rjn2954@gmail.com,9465432543,Navi Mumbai,45000
+A23473435,Hari,hari@gmail.com,9378350148,Vrindavan,160000

@@ -1,0 +1,6 @@
+Python, SQL basics, R basics, ASP.NET, Html basics, Azure, Iot, C/C++
+
+I see this opportunity as a way to contribute to as well as learn as this organisation collects the power consumed via an IoT device and shows it to the client , since i am learning IoT and one part of it is to present it to the client in a presentable way and also give them insights via predictions via ML, by contributing towards this project in any way, i will gain solution based practical knowledge in IoT.
+
+
+ 
