@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FileManagement.aspx.cs" Inherits="Website_.NET.grid" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="FileManagement.aspx.cs" Inherits="Website_.NET.grid" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
 <!DOCTYPE html>  
@@ -12,14 +12,6 @@
             top: 47px;
             left: 35px;
             z-index: 1;
-        }
-        .auto-style2 {
-            position: absolute;
-            top: 100px;
-            left: 37px;
-            z-index: 1;
-            width: 453px;
-            height: 36px;
         }
         .auto-style3 {
             position: absolute;
@@ -72,7 +64,6 @@
             <br />  
             <%--Gridview to Display the Available data with file Details--%><%--Generate the OnRowCommand Event Handler of the Gridview Control--%>  
                     <asp:Button ID="Back" runat="server" CssClass="auto-style1" OnClick="Back_Click" Text="Back" />
-            <asp:Label ID="Label1" runat="server" CssClass="auto-style2" style="position: absolute;"></asp:Label>
         <asp:TextBox ID="txtFolderName" runat="server" Text="" style="position: absolute; top: 49px; left: 908px;"></asp:TextBox>
             <asp:Button ID="btnCreate" runat="server" Text="Create Folder" OnClick="btnCreate_Click" style="position: absolute; top: 49px; left: 640px;"/>
 <asp:Button ID="btnDelete" runat="server" Text="Delete Folder" OnClick="btnDelete_Click" style="position: absolute; top: 48px; left: 780px;" />

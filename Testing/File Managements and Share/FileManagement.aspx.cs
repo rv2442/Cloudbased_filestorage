@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -20,7 +20,7 @@ namespace Website_.NET
         //  string username = "user3";
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["username"] = "User1";
+            Session["username"] = "Rv2442";
             if (Session["username"] != null)
             {
                 if (!IsPostBack)
@@ -36,6 +36,7 @@ namespace Website_.NET
                 Loop_file_gridview();
             }
             //Response.Write(username);
+            Settings_page obj = new Settings_page();
         }
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
         {
@@ -72,12 +73,11 @@ namespace Website_.NET
             // Response.Write(username);
             if ((Directory.GetFiles(currentpath).Length == 0))
             {
-                //Label1.Visible = true;
-                //Label1.Text = " No files in this folder";
+                //GridView1.DataSource = null;
+                //GridView1.DataBind();
             }
             else
             {
-                //Label1.Visible = false;
                 ListOfData();
             }
             if (Directory.GetDirectories(currentpath).Length == 0)
@@ -104,25 +104,40 @@ namespace Website_.NET
         {
             if ((FileName == ("")) || (FileName == null))
             {
-                DataTable dt1 = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                                 //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
-                dt1.Columns.Add("File");
-                dt1.Columns.Add("Size");
-                dt1.Columns.Add("Type");
-                foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
+                if (Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/")))
                 {
+                    DataTable dt1 = new DataTable(); //Datatable is Created to Add Dynamic Columns  
+                                                     //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                    dt1.Columns.Add("File");
+                    dt1.Columns.Add("Size");
+                    dt1.Columns.Add("Type");
+                    foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
+                    {
 
 
-                    FileInfo fileinfo1 = new FileInfo(str);
-                    string filename_ex = fileinfo1.Name; //Getting the Name of the File  
-                    string filesize_ex = (fileinfo1.Length / 1024).ToString(); //Getting the Size of the file and Converting it into KB from Bytes  
-                    string filetype_ex = GetFileTypeByFileExtension(fileinfo1.Extension); //Getting file Extension and Calling Custom Method  
-                    dt1.Rows.Add(filename_ex, filesize_ex, filetype_ex);
+                        FileInfo fileinfo1 = new FileInfo(str);
+                        string filename_ex = fileinfo1.Name; //Getting the Name of the File  
+                        string filesize_ex = (fileinfo1.Length / 1024).ToString(); //Getting the Size of the file and Converting it into KB from Bytes  
+                        string filetype_ex = GetFileTypeByFileExtension(fileinfo1.Extension); //Getting file Extension and Calling Custom Method  
+                        dt1.Rows.Add(filename_ex, filesize_ex, filetype_ex);
+                    }
+                    GridView1.DataSource = dt1; // Setting the Values of DataTable to be Shown in Gridview  
+                    GridView1.DataBind(); // Binding the Data  
+                    Loop_file_gridview();
                 }
-                GridView1.DataSource = dt1; // Setting the Values of DataTable to be Shown in Gridview  
-                GridView1.DataBind(); // Binding the Data  
-                Loop_file_gridview();
-                
+                else
+                {
+                    SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                    SqlCommand cmd = new SqlCommand("create table " + username + " (username varchar(25),filepath varchar(1000),userfile varchar(100),sizefile varchar(255))", con);
+
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    //string user = username;
+                    
+                    Directory.CreateDirectory(Server.MapPath("~/MyUploads/" + Session["username"].ToString()));
+                }
             }
             else
             {
@@ -136,7 +151,7 @@ namespace Website_.NET
                 {
 
                     SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                    SqlCommand cmd = new SqlCommand("create table " + username + " (username varchar(25),filepath varchar(100),userfile varchar(100),sizefile varchar(255))", con);
+                    SqlCommand cmd = new SqlCommand("create table " + username + " (username varchar(25),filepath varchar(1000),userfile varchar(100),sizefile varchar(255))", con);
 
 
                     con.Open();
@@ -316,7 +331,7 @@ namespace Website_.NET
                         Directory.Delete(Server.MapPath("~\\MyUploads\\"+Session["currentpath"]+"\\"+folder_path), true);
                         
                     }
-                    //Response.Write(folder_path);
+                    
                 }
             }
 
@@ -335,18 +350,12 @@ namespace Website_.NET
                 var checkbox = gvrow.FindControl("CheckBox1") as CheckBox;
                 if (checkbox.Checked)
                 {
-                    //var filename = gvrow.FindControl("LinkButton1") as LinkButton;
                     LinkButton filename = (LinkButton)gvrow.FindControl("LinkButton1");
                    
                     checkboxdata.Add(filename.Text);
                 }
             }
-            /*string abc="";
-            foreach (string str in checkboxdata)
-            {
-                abc += "\n" + str;
-            }
-            Label1.Text = abc;*/
+            
             return checkboxdata;
         }
 
@@ -364,7 +373,7 @@ namespace Website_.NET
                 }
             }
 
-            Label1.Text = checkboxdataforlist.Count.ToString();
+           // Label1.Text = checkboxdataforlist.Count.ToString();
             return checkboxdataforlist;
         }
         protected void btPopupLoad_Click(object sender, EventArgs e)
@@ -397,7 +406,6 @@ namespace Website_.NET
 
                     table_share(users, Session["currentpath"].ToString() + "\\" + file, "file");
 
-
                 }
 
             }
@@ -412,7 +420,7 @@ namespace Website_.NET
 
             if ((list_file.Count == 0) && (list_folder.Count == 0))
             {
-                //Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
+                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
             }
             else
             {
