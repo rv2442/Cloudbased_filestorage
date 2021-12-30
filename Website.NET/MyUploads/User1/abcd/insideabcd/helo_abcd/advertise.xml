@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+	<Ad>
+		<ImageUrl>image/Krsna.jpeg</ImageUrl>
+		<NavigateUrl>https://vedabase.io/ </NavigateUrl>
+		<AlternateText>This is Krsna the Supreme Lord</AlternateText>
+	</Ad>
+	<Ad>
+		<ImageUrl>image/Krsna.jpg</ImageUrl>
+		<NavigateUrl>https://www.udemy.com/ </NavigateUrl>
+		<AlternateText>This is Udemy</AlternateText>
+	</Ad>
+	<Ad>
+		<ImageUrl>image/Nitai.jpg</ImageUrl>
+		<NavigateUrl>https://aws.amazon.com/ </NavigateUrl>
+		<AlternateText>This is AWS</AlternateText>
+	</Ad>
+</Advertisements>
