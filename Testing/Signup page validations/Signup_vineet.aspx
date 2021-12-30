@@ -71,7 +71,7 @@
 <body>
     <script type="text/javascript">
         function nextpage() {
-            window.location.href = "gmail_otp.aspx";
+            window.location.href = "OTP.aspx";
         }
         function alert_first() {
             alert("A secret key has been given to you please store it securely as it can be used to change your password");

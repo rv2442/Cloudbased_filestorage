@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Net.Mail;
 
 namespace Website_.NET
 {
@@ -33,7 +34,7 @@ namespace Website_.NET
             }
                 this.scrkey = finalString;
                 this.usrname = username;
-            Response.Write(Session["validity"].ToString());
+           // Response.Write(Session["validity"].ToString());
         }
         public void SecretKey()
         {
@@ -146,43 +147,15 @@ namespace Website_.NET
             Label1.Text = y;
             if (pass)
             {
-                //if (txtpassword.Text != txtconfpass.Text)
-                //{
-                //    lblmsg.Visible = true;
-                //    lblmsg.Text = "Password and Confirm Password should match";
 
-                //    txtconfpass.Text = "";
-                //    txtconfpass.Focus();
-                //}
-                //else if (email_unique == false)
-                //{
-                //    email_label.Text = "Email not valid";
-                //    txtemail.Focus();
-                //}
-                //else if (username_unique == false)
-                //{
-                //    uname_label.Text = "Username has already been taken";
-                //    txtusername.Focus();
-                //}
-                //else
-                //{
+                //string skey = Session["scrkey"].ToString();
 
-                    SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                    SqlCommand cmd = new SqlCommand("insert into cloudlogin values(@username,@password,@email,@secretkey)", con);
-                    string skey = Session["scrkey"].ToString();
-                    cmd.Parameters.AddWithValue("@username", txtusername.Text);
-                    cmd.Parameters.AddWithValue("@password", txtpassword.Text);
-                    cmd.Parameters.AddWithValue("@email", txtemail.Text);
-                    cmd.Parameters.AddWithValue("@secretkey", skey);
-                    username = txtusername.Text;
+                Session["username"] = txtusername.Text;
+                Session["password"] = txtpassword.Text;
+                Session["email"] = txtemail.Text;
+                send_otp();
 
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    //TextFile(username, skey);
-                    //cmd.ExecuteNonQuery();
-                    con.Close();
-                   // Response.Redirect("gmail_otp.aspx");
-                //}
+                
             }
             else
             {
@@ -249,7 +222,62 @@ namespace Website_.NET
 
         public void Button2_Click(object sender, EventArgs e)
         {
-            Response.Redirect("gmail_otp.aspx");
+            //Response.Redirect("gmail_otp.aspx");
+        }
+
+        protected string GenerateRandomOTP(int iOTPLength, string[] saAllowedCharacters)
+
+        {
+
+            string sOTP = String.Empty;
+
+            string sTempChars = String.Empty;
+
+            Random rand = new Random();
+
+            for (int i = 0; i < iOTPLength; i++)
+
+            {
+
+                int p = rand.Next(0, saAllowedCharacters.Length);
+
+                sTempChars = saAllowedCharacters[rand.Next(0, saAllowedCharacters.Length)];
+
+                sOTP += sTempChars;
+
+            }
+
+            return sOTP;
+
+        }
+        protected void send_otp()
+        {
+            try
+            {
+                MailMessage Msg = new MailMessage();
+                string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+                string sRandomOTP = GenerateRandomOTP(4, saAllowedCharacters);
+                // Sender's Email address here
+                Msg.From = new MailAddress("cloudstorage636@gmail.com");
+                // Recipient's Email address herw.
+                Msg.To.Add(txtemail.Text);
+                Msg.Subject = "Cloud Storage Account Confirmation";
+                Msg.Body = " Your OTP is " + sRandomOTP;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.Credentials = new System.Net.NetworkCredential("cloudstorage636@gmail.com", "cloudstorage123");
+                smtp.EnableSsl = true;
+                smtp.Send(Msg);
+                Msg = null;
+                Session["OTP"] = sRandomOTP;
+            }
+            catch 
+            {
+               
+            }
         }
     }
+
 }
