@@ -47,8 +47,7 @@
         </style>
 </head>  
 <body>  
-    <form id="form1" runat="server" style="margin-left: 0px;">
-         <div class="navbar">
+   <div class="navbar">
  
     <a href="MainPage.aspx">Home</a>&nbsp;
     <a href="FileStorage.aspx">Cloud Storage</a>
@@ -60,7 +59,7 @@
     </button>
     <div class="dropdown-content">
       <a href="SharedFiles.aspx">Shared Files</a>
-      <a href="Profile.aspx">Profile</a>
+      <a href="Settings.aspx">Settings</a>
      <a href="javascript:if(confirm('Are you sure you want to log out?')) window.location.href = 'Login.aspx';">Sign Out</a>
  
  
