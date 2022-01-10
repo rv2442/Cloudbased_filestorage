@@ -1,1 +1,1 @@
-Your images will be stored here when you register by face auth
+Your face will be recognized from here when you register by face auth and login 
