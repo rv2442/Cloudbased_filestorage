@@ -45,10 +45,9 @@
       <ion-icon name="lock-closed-outline"></ion-icon>
       <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
      <asp:TextBox ID="txtpassword" runat="server" CssClass="pas" type="password" TextMode="Password" placeholder="********" ></asp:TextBox>
-      <ion-icon class="show-hide" name="eye-outline"></ion-icon> 
     </div>  </div>
-  <div><asp:Label ID="lblmsg" runat="server" Text="Incorrect Username or password" Visible="False" ForeColor="Red"></asp:Label></div>
-    <asp:Button ID="Button3" class="login" runat="server" style="cursor:pointer" OnClick="Button1_Click" Text="Login" />
+  <div><asp:Label ID="errormsg" runat="server" Text="Incorrect Username or password" Visible="False" ForeColor="Red"></asp:Label></div>
+    <asp:Button ID="Button3" class="login" runat="server" style="cursor:pointer" OnClick="Login_Button_Click" Text="Login" />
   <div class="footer"> 
     <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/SignUp.aspx">Signup</asp:HyperLink>
     <asp:HyperLink ID="HyperLink2" runat="server"  NavigateUrl="~/ForgotPassword.aspx" >Forgot Password?</asp:HyperLink>

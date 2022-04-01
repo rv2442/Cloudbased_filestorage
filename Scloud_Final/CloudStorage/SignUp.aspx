@@ -100,7 +100,7 @@
     <label for="email">Password</label>
     <div class="sec-2">
       <ion-icon name="lock-closed-outline"></ion-icon>
-      <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
+        <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
      <asp:TextBox ID="txtpassword" runat="server" CssClass="pas" type="password" TextMode="Password" placeholder="********" Height="23px" Width="444px" ></asp:TextBox>
       <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtpassword"  ErrorMessage="*" ForeColor="Red" SetFocusOnError="True"></asp:RequiredFieldValidator>
         
@@ -112,9 +112,9 @@
     <label for="email">Confirm Password</label>
     <div class="sec-2">
       <ion-icon name="lock-closed-outline"></ion-icon>
-      <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
+        <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
      <asp:TextBox ID="txtconfpass" runat="server" CssClass="pas" type="password" TextMode="Password" placeholder="********" Height="22px" Width="444px" ></asp:TextBox>
-  <%--    <ion-icon class="show-hide" name="eye-outline"></ion-icon> --%>
+        <%--    <ion-icon class="show-hide" name="eye-outline"></ion-icon> --%>
     </div>  </div>
 
   <div><asp:Label ID="Label1" runat="server" ForeColor="Red"></asp:Label><br />
@@ -127,7 +127,7 @@
     <script>
         AcccessCodeBehindValue();
     </script>
-     <asp:Button ID="Button1" style="cursor: pointer" class="login" runat="server"  onclientclick="download()" OnClick="Button1_Click" Text="Sign Up" />
+     <asp:Button ID="Sign_Up" style="cursor: pointer" class="login" runat="server"  onclientclick="download()" OnClick="Sign_Up_Click" Text="Sign Up" />
 
   <div class="footer"> 
     <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/Login.aspx">Login</asp:HyperLink>

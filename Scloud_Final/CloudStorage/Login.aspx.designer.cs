@@ -42,13 +42,13 @@ namespace CloudStorage
         protected global::System.Web.UI.WebControls.TextBox txtpassword;
 
         /// <summary>
-        /// lblmsg control.
+        /// errormsg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblmsg;
+        protected global::System.Web.UI.WebControls.Label errormsg;
 
         /// <summary>
         /// Button3 control.

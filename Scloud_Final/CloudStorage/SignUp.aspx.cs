@@ -1,19 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * @file SignUp.aspx.cs
+ * @Created by Vineet Dabholkar, Rahul Vijan
+ * 
+ */
+
+
+/*          Functions
+ *  
+ *  SecretKey()    -  Saves Secret key to global variable finalString, a Session Variable which passes it on to The OTP Checking Page 
+ *  ValidatePassword()    - Checks if Password String Matches Regex Requirements, provides error message on failure
+ *  Sign_Up_Click()   - 
+ */
+
+
+/*
+ * Library Includes
+ */
+
+using System;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data;
 using System.Net.Mail;
+
+
+
 
 namespace CloudStorage
 {
     public partial class SignUp : System.Web.UI.Page
     {
+
+        /* Assigning Global Variables */
         string finalString;
         public string scrkey;
         public string usrname;
@@ -34,7 +52,7 @@ namespace CloudStorage
             }
             this.scrkey = finalString;
             this.usrname = username;
-            // Response.Write(Session["validity"].ToString());
+            
         }
         public void SecretKey()
         {
@@ -58,7 +76,7 @@ namespace CloudStorage
 
             if (string.IsNullOrWhiteSpace(input))
             {
-                //Response.Write("<script>alert('password cant be blank');</script>");
+                
             }
 
             var hasNumber = new Regex(@"[0-9]+");
@@ -109,8 +127,6 @@ namespace CloudStorage
                 ErrorMessage = "Password and Confirm Password should match";
                 allvalidationpassed = false;
                 Session["validity"] = allvalidationpassed.ToString();
-
-
                 txtconfpass.Text = "";
                 txtconfpass.Focus();
                 return false;
@@ -142,7 +158,7 @@ namespace CloudStorage
             }
         }
 
-        public bool ValidatePassword_gen(string password, out string ErrorMessage)
+/*        public bool ValidatePassword_gen(string password, out string ErrorMessage)
         {
             var input = password;
             ErrorMessage = string.Empty;
@@ -197,22 +213,20 @@ namespace CloudStorage
             }
         }
 
+*/
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void Sign_Up_Click(object sender, EventArgs e)
         {
-            bool pass = ValidatePassword(txtpassword.Text, out string y);
+            bool pass = ValidatePassword(txtpassword.Text, out string errorstring);
             Session["validity"] = pass.ToString();
-            Label1.Text = y;
+            Label1.Text = errorstring;
             if (pass)
             {
-
-                //string skey = Session["scrkey"].ToString();
 
                 Session["username"] = txtusername.Text;
                 Session["password"] = txtpassword.Text;
                 Session["email"] = txtemail.Text;
                 send_otp();
-
 
             }
             else
@@ -281,7 +295,7 @@ namespace CloudStorage
 
         public void Button2_Click(object sender, EventArgs e)
         {
-            //Response.Redirect("gmail_otp.aspx");
+            
         }
 
         protected string GenerateRandomOTP(int iOTPLength, string[] saAllowedCharacters)

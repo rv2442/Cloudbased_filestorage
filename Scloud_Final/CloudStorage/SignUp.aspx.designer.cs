@@ -159,13 +159,13 @@ namespace CloudStorage
         protected global::System.Web.UI.WebControls.HiddenField HiddenField3;
 
         /// <summary>
-        /// Button1 control.
+        /// Sign_Up control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button Sign_Up;
 
         /// <summary>
         /// HyperLink1 control.
