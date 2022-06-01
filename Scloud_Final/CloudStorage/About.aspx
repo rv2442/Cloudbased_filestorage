@@ -14,6 +14,7 @@
 </head>
 <body>
 <form id="form1" runat="server">
+    <%--Navigation bar --%>
         <div class="navbar">
  
     <a href="MainPage.aspx">Home</a>&nbsp;
@@ -27,6 +28,7 @@
     <div class="dropdown-content">
       <a href="SharedFiles.aspx">Shared Files</a>
       <a href="Settings.aspx">Settings</a>
+      <%--Pops out a confirmation dialog to confirm whether the user wants to Logout or not --%>
      <a href="javascript:if(confirm('Are you sure you want to log out?')) window.location.href = 'Login.aspx';">Sign Out</a>
  
  
@@ -44,12 +46,7 @@
 
 </p>
         <p style="justify-content:center; text-align:center; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cloud storage services may be accessed through a colocated cloud computing service, a web service application programming interface (API) or by applications that use the API, such as cloud desktop storage, a cloud storage gateway or Web-based content management systems.</p>
-        
-
-
-
-
-        <br />
+ <br />
         
 
 
