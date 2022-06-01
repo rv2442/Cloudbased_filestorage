@@ -1,7 +1,8 @@
 /*
 *    @author: Vineet Dabholkar, Rahul Vijan
 *
-*    This Page is made for when the user forgets his password
+*    This Page is used to help user regain his forgotten password by first performing security checks and then 
+*    sending him his password through mail
 *
 */
 
