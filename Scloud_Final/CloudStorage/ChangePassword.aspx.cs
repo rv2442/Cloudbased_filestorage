@@ -1,4 +1,10 @@
-﻿using System;
+/*
+*    @author: Vineet Dabholkar, Rahul Vijan
+*
+*    This Page is used to Update user's Password
+*
+*/
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -14,15 +20,21 @@ namespace CloudStorage
     {  
         protected void Page_Load(object sender, EventArgs e)
         {
-           // Session["username"] = "Vinny636";
+           
         }
-
+        
+        
+         /*
+        *    This function extracts the existing users password, and secret key (private key) from the database and matches it with 
+        *        clients entered data on the Web App.
+        *    If it matches with data in Database and new password meets Regex requirements then password is updated in Database.
+        */
         protected void Button1_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
             SqlCommand cmd = new SqlCommand("select password,secretkey from cloudlogin where username=@username", con);
             cmd.Parameters.AddWithValue("@username", Session["username"].ToString());
-            con.Open();
+            con.Open(); /* Connection Established to DB */
             SqlDataReader dr = cmd.ExecuteReader();
             string pwd = null;
             string scrkey = null;
@@ -32,6 +44,8 @@ namespace CloudStorage
                 scrkey = dr["secretkey"].ToString();
             }
             con.Close();
+            
+            /* New Password is Checked with Old Password */
             if (txtoldpwd.Text != pwd)
             {
                 lblmsg.Text = "Incorrect Old Password";
@@ -51,7 +65,7 @@ namespace CloudStorage
                 txtconfirmpwd.Text = "";
                 txtnewpwd.Focus();
             }
-            else if (txtscrkey.Text != scrkey)
+            else if (txtscrkey.Text != scrkey) /* Secret Key is Checked */
             {
                 lblmsg.Text = "Secret Key you have entered is not valid";
                 txtscrkey.Text = "";
@@ -60,7 +74,7 @@ namespace CloudStorage
             else
             {
                 SignUp obj = new SignUp();
-                bool validate =obj.ValidatePassword_gen(txtnewpwd.Text, out string ErrorMessage);
+                bool validate =obj.ValidatePassword_gen(txtnewpwd.Text, out string ErrorMessage); /* NewPassword is Checked against Regex Requirements */
                 if (validate)
                 {
                     SqlCommand cmd1 = new SqlCommand("update cloudlogin set password=@password where username=@username", con);
