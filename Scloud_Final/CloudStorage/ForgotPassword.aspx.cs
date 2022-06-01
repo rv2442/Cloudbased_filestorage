@@ -16,7 +16,7 @@ using System.Web.UI.WebControls;
 
 namespace CloudStorage
 {
-    *
+    
     public partial class ForgotPassword : System.Web.UI.Page
     {   /* Making a Connection to the database */
         SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
@@ -25,6 +25,10 @@ namespace CloudStorage
         {
             
         }
+        
+        /* 
+         * This function uses DataReader to read the information required for the user to regain his/her forgotten password
+         */
         protected void Button1_Click(object sender, EventArgs e)
         {
 
@@ -33,7 +37,8 @@ namespace CloudStorage
             cmd.Parameters.AddWithValue("@user", txtusername.Text);
             con.Open();
 
-            /*The data reader provides an easy way for the programmer to read data from a database as if it were coming from a stream
+            /* 
+            * The data reader provides an easy way for the programmer to read data from a database as if it were coming from a stream
             * The DataReader provides a read-only, forward-only mechanism to access data via ADO
             */
             SqlDataReader dr = cmd.ExecuteReader();
