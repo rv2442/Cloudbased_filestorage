@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>SCloud - Login</title>
+  <%-- CSS scripts --%>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -25,7 +26,7 @@
 </head>
 <body>
         <form id="form1" runat="server">
-<!-- partial:index.partial.html -->
+<%-- Page components with their icons and placeholders --%>
 <div class="screen-1">
     <img class="auto-style1" src="Images/cloud2.png"  />   
     
@@ -43,7 +44,7 @@
     <label for="password">Password</label>
     <div class="sec-2">
       <ion-icon name="lock-closed-outline"></ion-icon>
-      <%--<input class="pas" type="password" name="password" placeholder="············"/>--%>
+      
      <asp:TextBox ID="txtpassword" runat="server" CssClass="pas" type="password" TextMode="Password" placeholder="********" ></asp:TextBox>
       <ion-icon class="show-hide" name="eye-outline"></ion-icon> 
     </div>  </div>
