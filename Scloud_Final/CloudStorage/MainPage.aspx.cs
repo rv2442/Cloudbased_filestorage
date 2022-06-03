@@ -1,4 +1,11 @@
-﻿using System;
+/*
+*    @author: Vineet Dabholkar, Rahul Vijan
+*
+*    This Page is the Main Page of the website.
+*
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +22,7 @@ namespace CloudStorage
         }
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Response.Redirect("FileStorage.aspx");
+            Response.Redirect("FileStorage.aspx"); /* Redirect to File Storage Page by clicking on the button on the center of the page */
         }
     }
 }
