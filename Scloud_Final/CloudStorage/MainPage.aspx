@@ -17,6 +17,7 @@
 </head>
 <body>
 <form id="form1" runat="server">
+         <%--Navigation bar --%>
         <div class="navbar">
  
     <a href="MainPage.aspx">Home</a>&nbsp;
@@ -30,6 +31,7 @@
     <div class="dropdown-content">
       <a href="SharedFiles.aspx">Shared Files</a>
       <a href="Settings.aspx">Settings</a>
+      <%--Pops out a confirmation dialog to confirm whether the user wants to Logout or not --%>
      <a href="javascript:if(confirm('Are you sure you want to log out?')) window.location.href = 'Login.aspx';">Sign Out</a>
  
  
