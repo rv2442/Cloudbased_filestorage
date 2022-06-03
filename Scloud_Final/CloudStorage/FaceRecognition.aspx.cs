@@ -1,4 +1,11 @@
-﻿using System;
+/*
+*    @author: Vineet Dabholkar, Rahul Vijan
+*
+*    This Page is used for Face Recognition if enabled by the user
+*
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,11 +29,16 @@ namespace CloudStorage
             {
                 count = 0;
             }
-            //Session["username"] = "Rv2442";
+            /* If the username is not defined yet due to some reason return to Login Page */
             if (Session["username"] == null || Session["username"].ToString() == "")
             {
                 Response.Redirect("Login.aspx");
             }
+            /* If the system fails to recognize the user then :
+             * a) After 3 attempts pop up a alert letting the user know he/she has exceeded the number of attempts and 
+             * he/she needs to change the password for security reasons.
+             * b) Redirect the user to the Change Password Page 
+             */
             if (count >= 3)
             {
                 Response.Write("<script type = 'text/javascript'> function attempts_exceeded() { alert('3 attempts exceeded please provide key and new password to disable face auth'); redirect() }function redirect() { window.location.href = 'ChangePassword.aspx'; }attempts_exceeded();</script>");
