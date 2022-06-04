@@ -79,7 +79,7 @@ namespace CloudStorage
             var base64imgstring = hidden_img.Value; /* extracts base64 string from Hiddden Field */
 
             string filePath = "C:\\inetpub\\wwwroot\\SCloud\\CloudStorage\\face_rec\\test.jpg";  /* Path where Image which is to be recognized is Saved */
-            File.WriteAllBytes(filePath, Convert.FromBase64String(base64imgstring)); /* Converting Base64 string to Image */
+            File.WriteAllBytes(filePath, Convert.FromBase64String(base64imgstring)); /* Converting Base64 string to Image and Save in defined Path */
             var stdOutput = new StringBuilder(); /* Object to save string got from Command line */
             var stderror = new StringBuilder();
 
