@@ -33,5 +33,8 @@ g)Vms will be placed in an Availability Set.
 #### Demo of Infrastructure Build
 
 
-[![image](https://user-images.githubusercontent.com/69571769/173811891-fdb8d13a-b14d-48ea-9fad-2bce48c235e3.png)](https://drive.google.com/file/d/1fnlps8zo9GIjFEQxo26_U6Pi7w2vI1cV/view?usp=sharing)
+[![image](https://user-images.githubusercontent.com/69571769/173812937-6cc2b6c6-ed17-44f1-a78b-4112febd6297.png)](https://drive.google.com/file/d/1fnlps8zo9GIjFEQxo26_U6Pi7w2vI1cV/view?usp=sharing)
+
+
+
 
