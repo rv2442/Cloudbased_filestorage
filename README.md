@@ -37,4 +37,10 @@ g)Vms will be placed in an Availability Set.
 
 
 
+_______________________________________________________________________________________________________________________________________________________________________
+#### LICENSE
+
+Code and Media are under the respective Licenses:  
+* [MIT](https://opensource.org/licenses/MIT)  
+* [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)  
 
