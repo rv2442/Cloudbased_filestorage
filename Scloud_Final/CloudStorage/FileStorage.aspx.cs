@@ -401,7 +401,11 @@ namespace CloudStorage
             }
             ListOfData();
         }
-
+        
+         /* 
+        *   A function to get the file data in a list as the users checks the checkbox.
+        */
+        
         protected List<string> getfiledata()
         {
             List<string> checkboxdata = new List<string>();
@@ -419,6 +423,9 @@ namespace CloudStorage
             return checkboxdata;
         }
 
+        /* 
+        *   A function to get the folder data in a list as the users checks the checkbox
+        */
         protected List<string> getfolderedata()
         {
             List<string> checkboxdataforlist = new List<string>();
@@ -433,9 +440,14 @@ namespace CloudStorage
                 }
             }
 
-            // Label1.Text = checkboxdataforlist.Count.ToString();
+            
             return checkboxdataforlist;
         }
+        
+        /* 
+        *   A function to load up a popup which prompts the user to enter comma seperated vales (csv) the usernames of users
+        *   he/she wants to share files to.
+        */
         protected void btPopupLoad_Click(object sender, EventArgs e)
         {
             var data = usernames_shared.Value;
@@ -454,7 +466,6 @@ namespace CloudStorage
                 }
                 else
                 {
-
                     invalid_users.Add(user.Trim());
                 }
             }
@@ -496,7 +507,11 @@ namespace CloudStorage
             }
 
         }
-
+        
+       /* 
+        *   A function to create a table while contains the files shared to the user
+        */
+        
         public void table_share(List<string> data_list, string path_share, string type)
         {
 
@@ -516,7 +531,7 @@ namespace CloudStorage
                     con_share.Close();
                     if (path_exists(user_shared, path_share))
                     {
-
+                         
                     }
                     else
                     {
@@ -529,13 +544,13 @@ namespace CloudStorage
                         con_share.Open();
                         cmd_share_add.ExecuteNonQuery();
                         con_share.Close();
-                        //Response.Write("data added");
+                        
                     }
                 }
                 catch
                 {
                     con_share.Close();
-
+                    /* If the path exists in the database dont insert as the file already exists */
                     if (path_exists(user_shared, path_share))
                     {
 
@@ -551,7 +566,7 @@ namespace CloudStorage
                         con_share.Open();
                         cmd_share.ExecuteNonQuery();
                         con_share.Close();
-                        //Response.Write("data added");
+                       
                     }
 
                 }
@@ -560,6 +575,10 @@ namespace CloudStorage
             }
 
         }
+        
+        /* 
+        *   A function to check if the filepath exists in the database
+        */
         protected bool path_exists(string tablename, string file_path)
         {
             bool exists = false;
@@ -580,7 +599,7 @@ namespace CloudStorage
                 con_share1.Close();
             }
 
-            //string file_path_2 = Server.MapPath("~\\MyUploads\\"+file_path.Trim());
+           
             string file_path_2 = Server.MapPath("~") + "MyUploads\\" + file_path;
             SqlCommand cmd_inside_folder = new SqlCommand("select * from " + tablename + " where  filetype='folder'", con_share1);
             con_share1.Open();
@@ -605,6 +624,10 @@ namespace CloudStorage
             return (exists || inside_folder);
 
         }
+        
+        /* 
+        *   A function to check if the user details exists in the database
+        */
         protected bool User_exists(string user)
         {
             bool exists = false;
