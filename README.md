@@ -1,8 +1,8 @@
 # Cloud Storage Web Application with FaceRecognition as 2F Auth
 
-SCloud is a cloud storage system where you can store data and share it to any user connected to it.
-You can also have 2 factor authentication to protect your data by face recognition.
-This project was built in Microsoft Visual Studio Code by using c#(asp.net) and javascript
+SCloud is a cloud storage system where you can store data and share it to any user connected to it.  
+You can also have 2 factor authentication to protect your data by face recognition.  
+This project was built in Microsoft Visual Studio Code by using C#(asp.net) and javascript.   
 
 
 
@@ -21,7 +21,7 @@ Project deployment was through Azure, I deployed the webserver on 2 Vms having a
 
 For this we tuned the Infrastucture a little bit, so Infrastructure and Features/Configs are:  
 
-a)Solution will be hosted on 2 Machines.  
+>a)Solution will be hosted on 2 Machines.  
 b)Vms be connected to a Load Balancer.  
 c)Will use Remote SQL Server.  
 d)Vms will use a Shared Disk.  
