@@ -246,7 +246,7 @@ namespace CloudStorage
                     Directory.CreateDirectory(Server.MapPath("~/MyUploads/" + Session["username"].ToString()));
                 }
             }
-            else /*  */
+            else /* fired when Select file field is not empty */
             {
                 var folder = Server.MapPath("~/MyUploads/" + username);
 
@@ -280,8 +280,7 @@ namespace CloudStorage
                         dt.Rows.Add(filename, filesize, filetype); /* Adding Rows to the Datasource */
                     }
                 }
-
-
+                
                 string user = Session["username"].ToString(); 
 
                 SqlConnection con1 = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
@@ -299,42 +298,50 @@ namespace CloudStorage
                 Loop_file_gridview(); /* update folder grid */
             }
         }
-        protected void Loop_file_gridview()
+        
+        
+        
+        protected void Loop_file_gridview() /* Fills/Updates Grid for folders Gridview */
         {
             try
             {
-                GridView2.DataSource = null;
+                /* emptying grid */
+                GridView2.DataSource = null; 
                 GridView2.DataBind();
+                
                 string folder = Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/");
-                DataTable dt_folder = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                                       //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                DataTable dt_folder = new DataTable(); /* Datatable is Created to Add Dynamic Columns */
+                
+                /* Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview */
                 dt_folder.Columns.Add("File");
                 dt_folder.Columns.Add("Type");
 
                 string filename;
                 string filetype;
 
-                foreach (string str in Directory.EnumerateDirectories(folder)) //Directory.GetFiles Method is used to Get the files from the Folder  
+                foreach (string str in Directory.EnumerateDirectories(folder)) /* getting each folder inside currentpath */ 
                 {
 
-                    filename = str; //Getting the Name of the File    
-                    filetype = "folder"; //Getting file Extension and Calling Custom Method  
-                    dt_folder.Rows.Add(filename, filetype); //Adding Rows to the DataTable
+                    filename = str; /* Getting the Name of the Folder */  
+                    filetype = "folder"; /* setting file type as directory(folder) */  
+                    dt_folder.Rows.Add(filename, filetype); /* Adding Rows to the DataTable */ 
 
-                    GridView2.DataSource = dt_folder; // Setting the Values of DataTable to be Shown in Gridview  
-                    GridView2.DataBind();
+                    GridView2.DataSource = dt_folder; /* Setting the Values of DataTable to Datasource */
+                    GridView2.DataBind(); /* binding Datasource with Grid */
 
                 }
             }
             catch 
             {
-                //  Response.Write("<br><br> No Folder inside current folder");
+                /* adding indicators on webpage for testing */
             }
         }
 
+
+
         public string GetFileTypeByFileExtension(string fileExtension)
         {
-            switch (fileExtension.ToLower()) //Checking the file Extension and Showing the Hard Coded Values on the Basis of Extension Type  
+            switch (fileExtension.ToLower()) //Checking the file Extension and Showing the Hard Coded Values on the Basis of common Extension Type  
             {
                 case ".doc":
                 case ".docx":
@@ -346,6 +353,7 @@ namespace CloudStorage
                     return "Text File";
                 case ".png":
                 case ".jpg":
+                case ".jpeg":
                     return "Windows Image file";
                 case ".pdf":
                     return "PDF Document";
@@ -357,13 +365,12 @@ namespace CloudStorage
 
         protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
         {
-         //Empty
-        
+         /* null */
         }
+
 
         protected void Back_Click(object sender, EventArgs e)
         {
-
             path = Session["currentpath"].ToString();
             int lastSlash = path.LastIndexOf('\\');
             path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path;
@@ -372,14 +379,15 @@ namespace CloudStorage
             ListOfData();
         }
 
+
         protected void New_folder_Click(object sender, EventArgs e)
         {
                 //Empty
-
         }
+        
+        
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-
             string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/{0}/", txtFolderName.Text.Trim()));
             if (!Directory.Exists(directoryPath))
             {
@@ -390,8 +398,8 @@ namespace CloudStorage
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory already exists.');", true);
             }
             ListOfData();
-
         }
+
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
@@ -429,11 +437,12 @@ namespace CloudStorage
             }
             ListOfData();
         }
-        
-         /* 
+
+
+
+        /* 
         *   A function to get the file data in a list as the users checks the checkbox.
         */
-        
         protected List<string> getfiledata()
         {
             List<string> checkboxdata = new List<string>();
@@ -451,6 +460,8 @@ namespace CloudStorage
             return checkboxdata;
         }
 
+
+
         /* 
         *   A function to get the folder data in a list as the users checks the checkbox
         */
@@ -467,10 +478,10 @@ namespace CloudStorage
                     checkboxdataforlist.Add(folderpath.Text);
                 }
             }
-
-            
             return checkboxdataforlist;
         }
+        
+        
         
         /* 
         *   A function to load up a popup which prompts the user to enter comma seperated vales (csv) the usernames of users
@@ -538,10 +549,12 @@ namespace CloudStorage
 
         }
         
-       /* 
+        
+        
+        
+        /* 
         *   A function to create a table while contains the files shared to the user
         */
-        
         public void table_share(List<string> data_list, string path_share, string type)
         {
 
@@ -606,6 +619,8 @@ namespace CloudStorage
 
         }
         
+        
+        
         /* 
         *   A function to check if the filepath or folderpath exists in the database
         */
@@ -644,7 +659,6 @@ namespace CloudStorage
                     if (file_path_2.Contains(cmd_data_inside_folder[2].ToString()))
                     {
                         inside_folder = true;
-
                     }
                 }
                 con_share1.Close();
@@ -654,8 +668,9 @@ namespace CloudStorage
                 con_share1.Close();
             }
             return (exists || inside_folder); 
-
         }
+        
+        
         
         /* 
         *   A function to check if the user details exists in the database which returns a boolean value
