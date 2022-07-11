@@ -235,7 +235,7 @@ namespace CloudStorage
                 }
                 else
                 {
-                    SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                    SqlConnection con = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
                     SqlCommand cmd = new SqlCommand("create table " + username + " (username varchar(25),filepath varchar(1000),userfile varchar(100),sizefile varchar(255))", con);
 
 
@@ -252,9 +252,7 @@ namespace CloudStorage
 
                 var folder = Server.MapPath("~/MyUploads/" + username);
 
-                ///  SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-                // SqlCommand cmd = new SqlCommand("create table @username(username varchar(25)," +
-                //  "filepath varchar(255),userfile varchar(255),sizefile varchar(255),)", con);
+              
                 
 
                 DataTable dt = new DataTable(); //Datatable is Created to Add Dynamic Columns  
@@ -295,7 +293,7 @@ namespace CloudStorage
                 //string filename1 = lastRow[0].ToString();
                 //string filesize1 = lastRow[1].ToString();
 
-                SqlConnection con1 = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+                SqlConnection con1 = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
                 SqlCommand cmd1 = new SqlCommand("insert into " + Session["username"].ToString() + " values(@username,@folder,@filename1,@filesize1)", con1);
                 cmd1.Parameters.AddWithValue("@username", user);
                 cmd1.Parameters.AddWithValue("@filename1", filename1);
@@ -368,6 +366,8 @@ namespace CloudStorage
 
         protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
         {
+         //Empty
+        
         }
 
         protected void Back_Click(object sender, EventArgs e)
@@ -383,7 +383,7 @@ namespace CloudStorage
 
         protected void New_folder_Click(object sender, EventArgs e)
         {
-
+                //Empty
 
         }
         protected void btnCreate_Click(object sender, EventArgs e)
@@ -465,8 +465,8 @@ namespace CloudStorage
         */
         protected List<string> getfolderedata()
         {
-            List<string> checkboxdataforlist = new List<string>();
-            foreach (GridViewRow gvrow in GridView2.Rows)
+            List<string> checkboxdataforlist = new List<string>(); /* List to store checkbox inputs*/
+            foreach (GridViewRow gvrow in GridView2.Rows)  /*For each folder in Grid view */
             {
                 var checkbox = gvrow.FindControl("CheckBox1") as CheckBox;
                 if (checkbox.Checked)
@@ -489,6 +489,7 @@ namespace CloudStorage
         {
             var data = usernames_shared.Value;
             var data_arr = data.Split(',');
+            /* Make lists to store the files, folders and invalid users names */
             List<string> list_file = new List<string>();
             list_file = getfiledata();
             List<string> list_folder = new List<string>();
@@ -497,16 +498,16 @@ namespace CloudStorage
             List<string> invalid_users = new List<string>();
             foreach (string user in data_arr)
             {
-                if (User_exists(user.Trim()))
+                if (User_exists(user.Trim())) /* Trim the spaces to not cause errors*/
                 {
-                    users.Add(user.Trim());
+                    users.Add(user.Trim()); 
                 }
                 else
                 {
                     invalid_users.Add(user.Trim());
                 }
             }
-            if (list_file.Count != 0)
+            if (list_file.Count != 0)  /* If files exist*/
             {
 
                 foreach (string file in list_file)
@@ -518,7 +519,7 @@ namespace CloudStorage
 
             }
 
-            if (list_folder.Count != 0)
+            if (list_folder.Count != 0) /* If folders exist*/
             {
                 foreach (string folder_path in list_folder)
                 {
@@ -526,13 +527,14 @@ namespace CloudStorage
                 }
             }
 
-            if ((list_file.Count == 0) && (list_folder.Count == 0))
+            if ((list_file.Count == 0) && (list_folder.Count == 0)) /* If neither files nor folders are selected*/
             {
-                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>");
+                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>"); /* Send a JavaScript to alert the user */
             }
             else
             {
-                if (invalid_users.Count != 0)
+                /* If there are invalid users from the input which user gave alert the user by displaying their names in an alert*/
+                if (invalid_users.Count != 0) 
                 {
                     string inv_users = "Invalid users found: \\n\\n";
                     for (int i = 0; i < invalid_users.Count; i++)
@@ -614,18 +616,19 @@ namespace CloudStorage
         }
         
         /* 
-        *   A function to check if the filepath exists in the database
+        *   A function to check if the filepath or folderpath exists in the database
         */
         protected bool path_exists(string tablename, string file_path)
         {
             bool exists = false;
             bool inside_folder = false;
-            SqlConnection con_share1 = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
-            SqlCommand cmd_share1 = new SqlCommand("select * from " + tablename + " where  filepath=@filepath", con_share1);
+            SqlConnection con_share1 = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
+            /* Select entries from the table with the filepath we want to check*/
+            SqlCommand cmd_share1 = new SqlCommand("select * from " + tablename + " where  filepath=@filepath", con_share1); /
             cmd_share1.Parameters.AddWithValue("@filepath", file_path);
             con_share1.Open();
             SqlDataReader data_share = cmd_share1.ExecuteReader();
-            if (data_share.HasRows)
+            if (data_share.HasRows) /* Update the boolean exists to true or false depending on the file path's existence */
             {
                 exists = true;
                 con_share1.Close();
@@ -637,14 +640,15 @@ namespace CloudStorage
             }
 
            
-            string file_path_2 = Server.MapPath("~") + "MyUploads\\" + file_path;
+            string file_path_2 = Server.MapPath("~") + "MyUploads\\" + file_path; 
+            /* Now select entries from the table with folder path we want to check*/
             SqlCommand cmd_inside_folder = new SqlCommand("select * from " + tablename + " where  filetype='folder'", con_share1);
             con_share1.Open();
             SqlDataReader cmd_data_inside_folder = cmd_inside_folder.ExecuteReader();
-            if (cmd_data_inside_folder.HasRows)
+            if (cmd_data_inside_folder.HasRows) 
             {
 
-                foreach (var path in cmd_data_inside_folder)
+                foreach (var path in cmd_data_inside_folder) /* Go through the paths of folders and update inside_folder to true if folder exists */
                 {
                     if (file_path_2.Contains(cmd_data_inside_folder[2].ToString()))
                     {
@@ -658,23 +662,24 @@ namespace CloudStorage
             {
                 con_share1.Close();
             }
-            return (exists || inside_folder);
+            return (exists || inside_folder); 
 
         }
         
         /* 
-        *   A function to check if the user details exists in the database
+        *   A function to check if the user details exists in the database which returns a boolean value
+        *   indicating whether the username exists in the database or not
         */
         protected bool User_exists(string user)
         {
             bool exists = false;
-            SqlConnection con_user_exists = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlConnection con_user_exists = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
             SqlCommand cmd_user_exists = new SqlCommand("select * from cloudlogin where username=@username", con_user_exists);
             cmd_user_exists.Parameters.AddWithValue("@username", user.Trim());
             con_user_exists.Open();
             SqlDataReader data_user_exists = cmd_user_exists.ExecuteReader();
 
-            if (data_user_exists.HasRows)
+            if (data_user_exists.HasRows) /* Check the database for the user by calling the HasRows method and update exists variable */
             {
                 exists = true;
                 con_user_exists.Close();
