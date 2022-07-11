@@ -369,14 +369,14 @@ namespace CloudStorage
         }
 
 
-        protected void Back_Click(object sender, EventArgs e)
+        protected void Back_Click(object sender, EventArgs e) /* sets path back 1 folder uptil root folder of the user */
         {
             path = Session["currentpath"].ToString();
-            int lastSlash = path.LastIndexOf('\\');
-            path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path;
-            Session["currentPath"] = path;
-            username = path;
-            ListOfData();
+            int lastSlash = path.LastIndexOf('\\'); /* getting last index of pattern \\ in path */
+            path = (lastSlash > -1) ? path.Substring(0, lastSlash) : path; /* slicing path till last folder */
+            Session["currentPath"] = path; /* updating current path */
+            username = path;  
+            ListOfData(); /* updating grid to last folder's files and folders */
         }
 
 
@@ -386,62 +386,61 @@ namespace CloudStorage
         }
         
         
-        protected void btnCreate_Click(object sender, EventArgs e)
+        protected void btnCreate_Click(object sender, EventArgs e) /* creates folder in current path, alerts if folder to be created already exists in currentpath */
         {
-            string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/{0}/", txtFolderName.Text.Trim()));
-            if (!Directory.Exists(directoryPath))
+            string directoryPath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/{0}/", txtFolderName.Text.Trim())); /* currentpath + / + foldername */
+            if (!Directory.Exists(directoryPath)) /* create if doesn't exist already */
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            else
+            else /* browser alert if already exists */
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory already exists.');", true);
             }
-            ListOfData();
+            ListOfData(); /* update gridview */
         }
 
 
-        protected void btnDelete_Click(object sender, EventArgs e)
+        protected void btnDelete_Click(object sender, EventArgs e) /* Deletes selected files and folders */
         {
+            /* Getting selected filenames, foldernames */
             List<string> list_file = new List<string>();
             list_file = getfiledata();
             List<string> list_folder = new List<string>();
             list_folder = getfolderedata();
-            if (list_file.Count != 0)
+            
+            if (list_file.Count != 0) /* if some files are selected from Grid 1 */
             {
-                foreach (string file_name in list_file)
+                foreach (string file_name in list_file) 
                 {
-                    string filePath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/" + file_name));
+                    string filePath = Server.MapPath(string.Format("~/MyUploads/" + Session["currentpath"] + "/" + file_name)); /* filepath */
 
-                    File.Delete(filePath);
+                    File.Delete(filePath); /* delete file from currentpath */
                 }
             }
 
-            if (list_folder.Count != 0)
+            if (list_folder.Count != 0) /* if some folders are selected from Grid 2 */
             {
                 foreach (string folder_path in list_folder)
                 {
-                    //string folderpath = Server.MapPath(folder_path);
-                    if (Directory.Exists(Server.MapPath("~\\MyUploads\\" + Session["currentpath"] + "\\" + folder_path)))
+                    if (Directory.Exists(Server.MapPath("~\\MyUploads\\" + Session["currentpath"] + "\\" + folder_path))) /* if folder exists */
                     {
-                        Directory.Delete(Server.MapPath("~\\MyUploads\\" + Session["currentpath"] + "\\" + folder_path), true);
-
+                        Directory.Delete(Server.MapPath("~\\MyUploads\\" + Session["currentpath"] + "\\" + folder_path), true); /* delete folder */
                     }
-
                 }
             }
 
-            if ((list_file.Count == 0) && (list_folder.Count == 0))
+            if ((list_file.Count == 0) && (list_folder.Count == 0)) /* if neither any file nor any folder was/were selected from Grid 1,2 */
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Directory does not exist.');", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('no file or folder selected');", true); /* browser alert */
             }
-            ListOfData();
+            ListOfData(); /* Update File and Folder Grids */
         }
 
 
 
         /* 
-        *   A function to get the file data in a list as the users checks the checkbox.
+        *   A function to get the file data in a list as the users checks the checkbox in Grid1 (files grid).
         */
         protected List<string> getfiledata()
         {
@@ -463,7 +462,7 @@ namespace CloudStorage
 
 
         /* 
-        *   A function to get the folder data in a list as the users checks the checkbox
+        *   A function to get the folder data in a list as the users checks the checkbox in Grid2 (folder Grid)
         */
         protected List<string> getfolderedata()
         {
@@ -485,12 +484,13 @@ namespace CloudStorage
         
         /* 
         *   A function to load up a popup which prompts the user to enter comma seperated vales (csv) the usernames of users
-        *   he/she wants to share files to.
+        *   user wants to share files to.
         */
         protected void btPopupLoad_Click(object sender, EventArgs e)
         {
             var data = usernames_shared.Value;
             var data_arr = data.Split(',');
+            
             /* Make lists to store the files, folders and invalid users names */
             List<string> list_file = new List<string>();
             list_file = getfiledata();
@@ -498,6 +498,7 @@ namespace CloudStorage
             list_folder = getfolderedata();
             List<string> users = new List<string>();
             List<string> invalid_users = new List<string>();
+            
             foreach (string user in data_arr)
             {
                 if (User_exists(user.Trim())) /* Trim the spaces to not cause errors*/
@@ -511,14 +512,10 @@ namespace CloudStorage
             }
             if (list_file.Count != 0)  /* If files exist*/
             {
-
                 foreach (string file in list_file)
                 {
-
                     table_share(users, Session["currentpath"].ToString() + "\\" + file, "file");
-
                 }
-
             }
 
             if (list_folder.Count != 0) /* If folders exist*/
@@ -531,7 +528,7 @@ namespace CloudStorage
 
             if ((list_file.Count == 0) && (list_folder.Count == 0)) /* If neither files nor folders are selected*/
             {
-                Response.Write("<script type= 'text/javascript'>alert('No files selected')</script>"); /* Send a JavaScript to alert the user */
+                Response.Write("<script type= 'text/javascript'>alert('No files or folders selected')</script>"); /* Show a broswer alert to user */
             }
             else
             {
@@ -541,12 +538,11 @@ namespace CloudStorage
                     string inv_users = "Invalid users found: \\n\\n";
                     for (int i = 0; i < invalid_users.Count; i++)
                     {
-                        inv_users += invalid_users.ElementAt(i) + "\\n";
+                        inv_users += invalid_users.ElementAt(i) + "\\n"; /* adding each invalid user to new line */
                     }
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('" + inv_users + "')", true);
                 }
             }
-
         }
         
         
@@ -557,28 +553,23 @@ namespace CloudStorage
         */
         public void table_share(List<string> data_list, string path_share, string type)
         {
-
-
-            SqlConnection con_share = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlConnection con_share = new SqlConnection("Server=YOUR_SERVER_IP;uid=YOUR_UID;pwd=YOUR_PASSWORD;database=YOUR_DBNAME");
 
             foreach (string user in data_list)
             {
-
-
-                string user_shared = user.Trim() + "_shared";
-                try
+                string user_shared = user.Trim() + "_shared"; /* string concatenation (username + "_shared") */
+                try /* if user_shared table does not exist */
                 {
                     SqlCommand cmd_share = new SqlCommand("create table " + user_shared + " (username varchar(25),filetype varchar(10),filepath varchar(1000),fileowner varchar(25))", con_share);
                     con_share.Open();
                     cmd_share.ExecuteNonQuery();
                     con_share.Close();
-                    if (path_exists(user_shared, path_share))
+                    if (path_exists(user_shared, path_share)) /* user_shared table already has the files/folders to be shared */
                     {
-                         
+                         /* pass */
                     }
-                    else
+                    else /* user_shared table does not already have the files/folders to be shared, then add folder/file entry to user_shared table */
                     {
-
                         SqlCommand cmd_share_add = new SqlCommand("insert into " + user_shared + " values(@username,@filetype,@filepath,@fileowner)", con_share);
                         cmd_share_add.Parameters.AddWithValue("@username", user);
                         cmd_share_add.Parameters.AddWithValue("@filetype", type);
@@ -586,17 +577,17 @@ namespace CloudStorage
                         cmd_share_add.Parameters.AddWithValue("@fileowner", Session["username"].ToString());
                         con_share.Open();
                         cmd_share_add.ExecuteNonQuery();
-                        con_share.Close();
-                        
+                        con_share.Close();  
                     }
                 }
-                catch
+                catch /* if user_shared table already exists */
                 {
-                    con_share.Close();
+                    con_share.Close(); /* closing connection from above try snippet */
+                    
                     /* If the path exists in the database dont insert as the file already exists */
                     if (path_exists(user_shared, path_share))
                     {
-
+                        /* pass */
                     }
                     else
                     {
@@ -608,21 +599,16 @@ namespace CloudStorage
                         cmd_share.Parameters.AddWithValue("@fileowner", Session["username"].ToString());
                         con_share.Open();
                         cmd_share.ExecuteNonQuery();
-                        con_share.Close();
-                       
+                        con_share.Close();  
                     }
-
                 }
-
-
             }
-
         }
         
         
         
         /* 
-        *   A function to check if the filepath or folderpath exists in the database
+        *   A function to check if one of the selected files or folders exists in the database
         */
         protected bool path_exists(string tablename, string file_path)
         {
@@ -647,13 +633,13 @@ namespace CloudStorage
 
            
             string file_path_2 = Server.MapPath("~") + "MyUploads\\" + file_path; 
+            
             /* Now select entries from the table with folder path we want to check*/
             SqlCommand cmd_inside_folder = new SqlCommand("select * from " + tablename + " where  filetype='folder'", con_share1);
             con_share1.Open();
             SqlDataReader cmd_data_inside_folder = cmd_inside_folder.ExecuteReader();
             if (cmd_data_inside_folder.HasRows) 
             {
-
                 foreach (var path in cmd_data_inside_folder) /* Go through the paths of folders and update inside_folder to true if folder exists */
                 {
                     if (file_path_2.Contains(cmd_data_inside_folder[2].ToString()))
@@ -673,7 +659,7 @@ namespace CloudStorage
         
         
         /* 
-        *   A function to check if the user details exists in the database which returns a boolean value
+        *   A function to check if the user exists in the database which returns a boolean value
         *   indicating whether the username exists in the database or not
         */
         protected bool User_exists(string user)
@@ -695,7 +681,6 @@ namespace CloudStorage
                 exists = false;
                 con_user_exists.Close();
             }
-
             return exists;
         }
     }
