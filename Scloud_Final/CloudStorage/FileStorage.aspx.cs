@@ -1,4 +1,10 @@
-﻿   
+﻿
+/*
+*    @file: FileStorage.aspx.cs
+*    @author: Vineet Dabholkar, Rahul Vijan
+*    This Page is used to Store files uploaded by the user and to share it to other users 
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,43 +18,48 @@ namespace CloudStorage
 {
     public partial class FileStorage : System.Web.UI.Page
     {
-
+        /* Global Variables */
         string username = "";
         string FileName;
         string oldpath;
         string path;
 
-        //  string username = "user3";
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            if (!IsPostBack)
+            /*
+            *   If page loads for the first time and a directory named with the username does not exists,
+            *   then try to create a table in the remote sql server with the username, if table already exists just create the directory with username
+            */
+            if (!IsPostBack) 
             {
-                if (!Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString())))
+                if (!Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString()))) /* All userfiles are created under a directory called MyUploads */
                 {
+                    SqlConnection con = new SqlConnection("Server=YOUR_SERVER_IP;uid=YOUR_UID;pwd=YOUR_PASSWORD;database=YOUR_DBNAME");
                try
                     {
-                        SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
                         SqlCommand cmd = new SqlCommand("create table " + Session["username"].ToString() + " (username varchar(25),filepath varchar(1000),userfile varchar(100),sizefile varchar(255))", con);
-
 
                         con.Open();
                         cmd.ExecuteNonQuery();
                         con.Close();
-                        //string user = username;
                         Directory.CreateDirectory(Server.MapPath("~/MyUploads/" + Session["username"].ToString()));
                     }
-                    catch
+                    catch /* If query execution fails, close connection and create folder */
                     {
+                        con.close();
                         Directory.CreateDirectory(Server.MapPath("~/MyUploads/" + Session["username"].ToString()));
                     }
                 }
             }
-            Label1.Text = "";
-            //string usar111 = Session["username"].ToString();
-            //Session["username"] = "Rv2442";
-                if (Session["username"] != null)
+            Label1.Text = ""; /* Emptying Field Showing Storage Full Message when Storage is full */
+            
+                if (Session["username"] != null) /* We check if username session is maintained, if not redirect to login page */
             {
+                /*
+                *   We check size by calling the function storage_used() which returns the percentage of storage used
+                *   If percentage used >= 100.00 then hide 'upload' and 'select file' button and show notification telling storage is full
+                *   If not then make sure 'upload' and 'select file' buttons are visible and Notification field is empty
+                */
                 var size = storage_used();
                 if (size >= 100.00m )
                 {
@@ -62,85 +73,98 @@ namespace CloudStorage
                     Button1.Visible = true;
                     Label1.Text = "";
                 }
-                if (!IsPostBack)
+                if (!IsPostBack) /* On first page load event get username from usersession and create new session saving currentpath in it */
                 {
                     username = Session["username"].ToString();
-                    Session["currentpath"] = Session["username"].ToString();
+                    Session["currentpath"] = Session["username"].ToString(); /* using session as a global static variable */
                 }
             }
             else
             {
-                Response.Redirect("Login.aspx");
+                Response.Redirect("Login.aspx");  /* Redirect to login page for */
             }
-            if (!IsPostBack) //Used to Check whether the Page is loaded first time or not  
+            if (!IsPostBack) /* On first page load event call ListOfData and Loop_file_gridview */
             {
-                ListOfData(); //Custom Method Called
-                Loop_file_gridview();
+                ListOfData();  /* gets all data of folders and files from root directory of each user */
+                Loop_file_gridview(); /* fills 2 Grids (files and folders) using available data of folders and files */
             }
-            //Response.Write(username);
-            Settings obj = new Settings();
         }
+        
+        
 
-        protected decimal storage_used()
+        /* 
+        *   This function gets the total space in the directory named after username of user in bytes.
+        *   That size in bytes is converted to Mega bytes (MB), is rounded to a decimal data type and then returned
+        */
+        protected decimal storage_used() 
         {
-            string path_forsize = Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/");
-            DirectoryInfo peth = new DirectoryInfo(path_forsize);
-            var a = Settings.DirSize(peth);
-            double temp = Convert.ToInt32(a) / 1024 / 1024 / 10.24;
-            decimal size = decimal.Round(Convert.ToDecimal(temp), 2, MidpointRounding.AwayFromZero);
+            string path_forsize = Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/"); /* creating directory path to query its size */
+            DirectoryInfo peth = new DirectoryInfo(path_forsize); /* creating directory object */
+            var a = Settings.DirSize(peth); /* getting directory size */
+            double temp = Convert.ToInt32(a) / 1024 / 1024 / 10.24; /* converting to MB */
+            decimal size = decimal.Round(Convert.ToDecimal(temp), 2, MidpointRounding.AwayFromZero); /* converting double to decimal */
             return size;
         }
 
        
 
-        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) /* This function is fired when a File is Downloaded from the grid */  
         {
-            Path_changed();
-            Response.Clear();
+            Path_changed(); /* Update path */
+            Response.Clear(); /* clears buffer */
             Response.ContentType = "application/octet-stream";
-            Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument); //Used to append the filename at the time of Downloading  
-            Response.TransmitFile(Server.MapPath("~/MyUploads/" + username + "/") + e.CommandArgument); //Used to Fetch the file from the Physical folder of Server  
+            Response.AppendHeader("Content-Disposition", "filename=" + e.CommandArgument); /* Used to append the filename at the time of Downloading */
+            Response.TransmitFile(Server.MapPath("~/MyUploads/" + username + "/") + e.CommandArgument); /* Used to Fetch the file from the Physical folder of Server */  
             Response.End();
-            // Response.Redirect("MainPage.aspx");
         }
-        protected void Path_changed()
+        
+        protected void Path_changed() /* Update path when path is changed for a file system UI in browser using Grids */
         {
-            username = Session["currentpath"].ToString();
+            username = Session["currentpath"].ToString(); /* Updating path */
         }
-        protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e) //Is fired when File is Downloaded  
+        
+        
+        /* 
+        *   Function is fired when a Folder is Clicked for setting it as current working directory 
+        *   we update the path using the Grid command argument "e", saving it into global staic variable / session currentpath
+        *   Grid is then updated using the new path and Displaying the files and folders inside the clicked Folder 
+        */
+        protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e)   
         {
-            //insidefile = true;
-            path = e.CommandArgument.ToString();
-            oldpath = Server.MapPath("~/MyUploads/" + username + "/");
-            username = path.Substring(oldpath.Length, path.Length - oldpath.Length);
-            Session["currentpath"] = username;
-            string currentpath = Server.MapPath("~/MyUploads/" + username + "/");
-            //Response.Write(path + "<br><br>" + oldpath + "<br><br>" + username + "<br><br>" + currentpath + "<br><br>" + Session["username"].ToString());
+            path = e.CommandArgument.ToString(); /* getting new folder path from MyUploads folder*/
+            oldpath = Server.MapPath("~/MyUploads/" + username + "/"); /* getting the older folder path */
+            username = path.Substring(oldpath.Length, path.Length - oldpath.Length); /* subtracting older path from new path to get folder name */
+            Session["currentpath"] = username; /* setting foldername */
+            string currentpath = Server.MapPath("~/MyUploads/" + username + "/"); /* getting folder path from system root */
 
-            //Response.Write(currentpath);
-            DataTable dt_Infolder = new DataTable(); //Datatable is Created to Add Dynamic Columns
-            dt_Infolder.Clear();
-            dt_Infolder.Columns.Add("File");
+            
+            DataTable dt_Infolder = new DataTable(); /* Datatable is Created to Add Dynamic Columns */
+            dt_Infolder.Clear(); /* Clear table */
+            
+            /* adding columns */
+            dt_Infolder.Columns.Add("File"); 
             dt_Infolder.Columns.Add("Size");
             dt_Infolder.Columns.Add("Type");
-            GridView1.DataSource = dt_Infolder;
-            GridView1.DataBind();
-            // Response.Write(username);
-            if ((Directory.GetFiles(currentpath).Length == 0))
+            
+            GridView1.DataSource = dt_Infolder; /* Adding columns to datasource */
+            GridView1.DataBind(); /* Binding datasource with grid */
+            
+            if ((Directory.GetFiles(currentpath).Length == 0)) /* if no files are there inside clicked folder */
             {
-                //GridView1.DataSource = null;
-                //GridView1.DataBind();
+                /* pass */
             }
-            else
+            else    /* if some files are there inside clicked folder */
             {
-                ListOfData();
+                ListOfData(); /* get updated files inside folder */
             }
-            if (Directory.GetDirectories(currentpath).Length == 0)
+            if (Directory.GetDirectories(currentpath).Length == 0) /* if no folders are there inside clicked folder */
             {
-                GridView2.DataSource = null;
-                GridView2.DataBind();
+                GridView2.DataSource = null; /* emptying Datasource for Grid2 (grid used for folders) */
+                GridView2.DataBind(); /* Binding datasource to Grid2, making folder grid disappear in UI */
             }
         }
+        
+        
         protected void Button1_Click(object sender, EventArgs e)
         {
 
