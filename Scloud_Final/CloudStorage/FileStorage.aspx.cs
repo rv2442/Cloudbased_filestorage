@@ -203,11 +203,11 @@ namespace CloudStorage
         
         
         /* 
-        *   
+        *   Updates the Grid1 (grid containing files)
         */
         private void ListOfData()
         {
-            if ((FileName == ("")) || (FileName == null)) /*  */
+            if ((FileName == ("")) || (FileName == null)) /* fires when the upload button is clicked without selecting a file */
             {
                 if (Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/"))) /* if currently set path exists on server */
                 {
@@ -233,7 +233,7 @@ namespace CloudStorage
                     GridView1.DataBind(); /* Binding the Datasource to grid */
                     Loop_file_gridview(); /* Doing the same for folders */
                 }
-                else
+                else /* if currently set path does not exist on server, then create table in Database(SQL) for that user and create directory named after the user's username */
                 {
                     SqlConnection con = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
                     SqlCommand cmd = new SqlCommand("create table " + username + " (username varchar(25),filepath varchar(1000),userfile varchar(100),sizefile varchar(255))", con);
@@ -242,56 +242,47 @@ namespace CloudStorage
                     con.Open();
                     cmd.ExecuteNonQuery();
                     con.Close();
-                    //string user = username;
 
                     Directory.CreateDirectory(Server.MapPath("~/MyUploads/" + Session["username"].ToString()));
                 }
             }
-            else
+            else /*  */
             {
-
                 var folder = Server.MapPath("~/MyUploads/" + username);
 
-              
+                DataTable dt = new DataTable(); /* Datatable is Created to Add Dynamic Columns */  
                 
-
-                DataTable dt = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                                //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                /* Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview */
                 dt.Columns.Add("File");
                 dt.Columns.Add("Size");
                 dt.Columns.Add("Type");
-                //Looping through Each file available in the MyUploads folder  
+                
                 string filename1 = "";
                 string filesize1 = "";
                 string filetype1 = "";
-                foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + username + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
+                
+                /* Looping through Each file available in the MyUploads folder and adding them in fields of each row in datasource */
+                foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + username + "/")))
                 {
-
-
-                    FileInfo fileinfo = new FileInfo(str); //Fileinfo class is used to fetch the information about the Fetched file  
-                    if (fileinfo.Name == FileName)
+                    FileInfo fileinfo = new FileInfo(str); /* file object */ 
+                    if (fileinfo.Name == FileName) /* this case is specially for when a new file has been added to update the grid */
                     {
-                        filename1 = fileinfo.Name; //Getting the Name of the File  
-                        filesize1 = (fileinfo.Length / 1024).ToString(); //Getting the Size of the file and Converting it into KB from Bytes  
-                        filetype1 = GetFileTypeByFileExtension(fileinfo.Extension); //Getting file Extension and Calling Custom Method  
-                        dt.Rows.Add(filename1, filesize1, filetype1); //Adding Rows to the DataTable
+                        filename1 = fileinfo.Name; /* Getting the Name of the File */
+                        filesize1 = (fileinfo.Length / 1024).ToString(); /* Getting the Size of the file and Converting it into KB from Bytes */
+                        filetype1 = GetFileTypeByFileExtension(fileinfo.Extension); /* Getting file Extension and Calling Custom Method  */
+                        dt.Rows.Add(filename1, filesize1, filetype1); /* Adding Rows to the Datasource */
                     }
-                    else
+                    else /* for all files other than the uploaded file */
                     {
-                        string filename = fileinfo.Name; //Getting the Name of the File  
-                        string filesize = (fileinfo.Length / 1024).ToString(); //Getting the Size of the file and Converting it into KB from Bytes  
-                        string filetype = GetFileTypeByFileExtension(fileinfo.Extension); //Getting file Extension and Calling Custom Method  
-                        dt.Rows.Add(filename, filesize, filetype); //Adding Rows to the DataTable  
+                        string filename = fileinfo.Name; /* Getting the Name of the File */ 
+                        string filesize = (fileinfo.Length / 1024).ToString(); /* Getting the Size of the file and Converting it into KB from Bytes */
+                        string filetype = GetFileTypeByFileExtension(fileinfo.Extension); /* Getting file Extension and Calling Custom Method */
+                        dt.Rows.Add(filename, filesize, filetype); /* Adding Rows to the Datasource */
                     }
-
                 }
 
 
-                string user = Session["username"].ToString();
-                //DataRow lastRow = dt.Rows[dt.Rows.Count - 1];
-
-                //string filename1 = lastRow[0].ToString();
-                //string filesize1 = lastRow[1].ToString();
+                string user = Session["username"].ToString(); 
 
                 SqlConnection con1 = new SqlConnection("Server=YOUR_SERVER_IP; uid=YOUR_UID; pwd=YOUR_PASSWORD; database=YOUR_DBNAME");
                 SqlCommand cmd1 = new SqlCommand("insert into " + Session["username"].ToString() + " values(@username,@folder,@filename1,@filesize1)", con1);
@@ -303,9 +294,9 @@ namespace CloudStorage
                 cmd1.ExecuteNonQuery();
                 con1.Close();
 
-                GridView1.DataSource = dt; // Setting the Values of DataTable to be Shown in Gridview  
-                GridView1.DataBind(); // Binding the Data  
-                Loop_file_gridview();
+                GridView1.DataSource = dt; /* Setting the Values of Datasource to be Shown in Gridview */
+                GridView1.DataBind(); /* Binding the Datasource to grid */
+                Loop_file_gridview(); /* update folder grid */
             }
         }
         protected void Loop_file_gridview()
