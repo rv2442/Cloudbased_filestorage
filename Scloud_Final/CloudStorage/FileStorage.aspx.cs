@@ -117,10 +117,12 @@ namespace CloudStorage
             Response.End();
         }
         
+        
         protected void Path_changed() /* Update path when path is changed for a file system UI in browser using Grids */
         {
             username = Session["currentpath"].ToString(); /* Updating path */
         }
+        
         
         
         /* 
@@ -164,60 +166,72 @@ namespace CloudStorage
         }
         
         
+        
+        /*
+        *   When a file is selected to be uploaded and the Upload button is clicked this function is triggered,
+        *   if current file if saved will not exceed quota of user that is 1 GB then upload if it does then abort upload and inform user of insufficient storage.
+        *   if file size exceeds 4GB we show a browser alert, saying maximum upload size exceeded. 
+        */
         protected void Button1_Click(object sender, EventArgs e)
         {
 
-            if (FileUpload1.HasFile) //If the used Uploaded a file  
+            if (FileUpload1.HasFile) /* checking if the user has Uploaded a file */
             {
                 try
                 {
-                    var file = FileUpload1.FileBytes;
-                    decimal size = decimal.Round(Convert.ToDecimal(Convert.ToInt32(file.Length) / 1024 / 1024 / 10.24), 2, MidpointRounding.AwayFromZero);
-                    decimal current_size = storage_used();
-                    if ((size + current_size) < 100.00m)
+                    var file = FileUpload1.FileBytes; /* checking file size */
+                    decimal size = decimal.Round(Convert.ToDecimal(Convert.ToInt32(file.Length) / 1024 / 1024 / 10.24), 2, MidpointRounding.AwayFromZero); /* converting to MB and its percentage in 1 GB */
+                    decimal current_size = storage_used(); /* getting percentage of size of currently used space by user */
+                    if ((size + current_size) < 100.00m) /* if adding current file wont exceed user storage quota save file in users storage */
                     {
-                        FileName = FileUpload1.FileName; //Name of the file is stored in local Variable  
-                        FileUpload1.PostedFile.SaveAs(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/") + FileName); //File is saved in the Physical folder  
-                                                                                                                                            //Response.Write("<br><br><br><br>" + username);
+                        FileName = FileUpload1.FileName; /* getting name of file */
+                        FileUpload1.PostedFile.SaveAs(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/") + FileName); /* File is saved in the current path */  
                         username = Session["currentpath"].ToString();
                     }
-                    else
+                    else /* if adding current file will exceed user storage, abort file upload and show notification */
                     {
                         Label1.Text = "File Size exceeds Storage quota please upgrade to tier 2";
                     }
                 }
-                catch(Exception ex)
+                catch(Exception ex) /* Alert is shown if a file is above 4GB */
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('File Size cannot exceed 4 GB "+ex+"');", true);
                 }
             }
-            ListOfData(); //Custom method is Called  
+            ListOfData(); /* Update file data */
         }
-        //Custom Methods used in the Above Code  
+        
+        
+        /* 
+        *   
+        */
         private void ListOfData()
         {
-            if ((FileName == ("")) || (FileName == null))
+            if ((FileName == ("")) || (FileName == null)) /*  */
             {
-                if (Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/")))
+                if (Directory.Exists(Server.MapPath("~/MyUploads/" + Session["username"].ToString() + "/"))) /* if currently set path exists on server */
                 {
-                    DataTable dt1 = new DataTable(); //Datatable is Created to Add Dynamic Columns  
-                                                     //Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview  
+                    DataTable dt1 = new DataTable();  /* Datatable is Created to Add Dynamic Columns */  
+                    
+                    /* Columns Added with the Same name as that of Eval Expression and the DataField Value of the Gridview for files */
                     dt1.Columns.Add("File");
                     dt1.Columns.Add("Size");
                     dt1.Columns.Add("Type");
+                    
+                    /* for all files in current path create row fields and add to datasource */
                     foreach (string str in Directory.GetFiles(Server.MapPath("~/MyUploads/" + Session["currentpath"].ToString() + "/"))) //Directory.GetFiles Method is used to Get the files from the Folder  
                     {
 
 
-                        FileInfo fileinfo1 = new FileInfo(str);
-                        string filename_ex = fileinfo1.Name; //Getting the Name of the File  
-                        string filesize_ex = (fileinfo1.Length / 1024).ToString(); //Getting the Size of the file and Converting it into KB from Bytes  
-                        string filetype_ex = GetFileTypeByFileExtension(fileinfo1.Extension); //Getting file Extension and Calling Custom Method  
-                        dt1.Rows.Add(filename_ex, filesize_ex, filetype_ex);
+                        FileInfo fileinfo1 = new FileInfo(str); /* creating file object */
+                        string filename_ex = fileinfo1.Name; /* Getting the Name of the File */
+                        string filesize_ex = (fileinfo1.Length / 1024).ToString(); /* Getting the Size of the file and Converting it into KB from Bytes */
+                        string filetype_ex = GetFileTypeByFileExtension(fileinfo1.Extension); /* Getting file Extension and Calling Custom Method */
+                        dt1.Rows.Add(filename_ex, filesize_ex, filetype_ex); /* adding row fields to data source */
                     }
-                    GridView1.DataSource = dt1; // Setting the Values of DataTable to be Shown in Gridview  
-                    GridView1.DataBind(); // Binding the Data  
-                    Loop_file_gridview();
+                    GridView1.DataSource = dt1; /* Setting the Values of DataTable to be Shown in Gridview  */
+                    GridView1.DataBind(); /* Binding the Datasource to grid */
+                    Loop_file_gridview(); /* Doing the same for folders */
                 }
                 else
                 {
