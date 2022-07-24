@@ -7,7 +7,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET) and 
 
 
 
-#### Demo
+## Demo
 
 [![image](https://user-images.githubusercontent.com/69571769/173809833-7d8b778d-f048-4461-88cd-0a2215b22bd6.png)](https://drive.google.com/file/d/1m4VjrXCdJOOXuZban1Ac--veb3FO0f3m/view?usp=sharing)
 
@@ -30,7 +30,7 @@ f)Vms will be configured as a failover cluster.
 g)Vms will be placed in an Availability Set.  
 
 
-#### Demo of Infrastructure Build
+## Demo of Infrastructure Build
 
 
 [![image](https://user-images.githubusercontent.com/69571769/173812937-6cc2b6c6-ed17-44f1-a78b-4112febd6297.png)](https://drive.google.com/file/d/1fnlps8zo9GIjFEQxo26_U6Pi7w2vI1cV/view?usp=sharing)
