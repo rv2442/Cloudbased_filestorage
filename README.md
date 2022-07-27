@@ -28,6 +28,10 @@ d)Vms will use a Shared Disk.
 e)Azure Active Directory Domain Services (Vms joined to Custom Domain taken from Name.com)  
 f)Vms will be configured as a failover cluster.  
 g)Vms will be placed in an Availability Set.  
+  
+    
+![image](https://user-images.githubusercontent.com/69571769/181298281-f135ba00-a3cd-479c-bf8a-85c71ae9f8a5.png)
+
 
 
 ## Demo of Infrastructure Build
