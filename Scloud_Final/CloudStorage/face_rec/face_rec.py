@@ -49,8 +49,6 @@ def classify_face(im):
     known_face_names = list(faces.keys())
 
     img = cv2.imread(im, 1)
-    #img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
-    #img = img[:,:,::-1]
  
     face_locations = face_recognition.face_locations(img)
     unknown_face_encodings = face_recognition.face_encodings(img, face_locations)
