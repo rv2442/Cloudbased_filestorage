@@ -17,7 +17,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET) and 
 
 #### Making Scloud Highly Available
 
-Project deployment was through Azure, I deployed the webserver on 2 Vms having a common disk shared via a failover cluster using Azure AD DS, on top of that both of the Vms are in a Availability Set, so while explaining this project to others i explained all these concepts such as:
+Project deployment was through Azure, I deployed the webserver on 2 Vms having a common disk shared via a failover cluster using Azure AD DS, on top of that both of the Vms are in a Availability Set.
 
 For this we tuned the Infrastucture a little bit, so Infrastructure and Features/Configs are:  
 
