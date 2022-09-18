@@ -2,7 +2,7 @@
 
 SCloud is a cloud storage system where you can store data and share it to any user connected to it.  
 You can also have 2 factor authentication to protect your data by face recognition.  
-This project was built in Microsoft Visual Studio Code by using C#(ASP.NET) and Javascript.   
+This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Javascript and Python(Face Recognition).   
 
 
 
