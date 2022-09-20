@@ -7,8 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  
-  build:
+  build-dotnet-app:
     
     runs-on: ubuntu-latest
     defaults:
