@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: custom script
-      run: sudo apt-get install snap && sudo snap install --classic code
+      run: sudo su && apt-get update && apt-get install -y wget unzip && mkdir /usr/local/src/choco && cd /usr/local/src/choco && wget https://github.com/chocolatey/choco/archive/stable.zip && unzip stable.zip && rm stable.zip && cd /usr/local/src/choco/choco-stable && chmod +x build.sh && chmod +x zip.sh && ./build.sh && cd /usr/local/bin  &&  ln -s /usr/local/src/choco/choco-stable/build_output/chocolatey  && choco /usr/local/bin/choco && cd / && cd /usr/local/bin/chocolatey && mono choco.exe "$@" --allow-unofficial && docker build -t choco . &&  docker run --rm -ti choco /bin/bash && cd /usr/local/src/choco/choco-stable/build_output/chocolatey && mono choco.exe -h && choco install visualstudio2017-workload-webbuildtools    
     - name: Build
       run: dotnet build --no-restore
     - name: Test
