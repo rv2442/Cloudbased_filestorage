@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Cloudbased_filestorage/Scloud_Final/CloudStorage/
+        working-directory: ./Scloud_Final/CloudStorage/
 
     steps:
     - uses: actions/checkout@v3
