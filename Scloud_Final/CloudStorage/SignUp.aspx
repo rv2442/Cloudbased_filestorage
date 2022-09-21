@@ -25,49 +25,55 @@
 <body>
         <form id="form1" runat="server">
 <script type="text/javascript">
+    /* redirection */
     function nextpage() {
         window.location.href = "CheckOTP.aspx";
     }
+  
+  
+    /* prompt */  
     function alert_first() {
         alert("A secret key has been given to you please store it securely as it can be used to change your password");
         nextpage();
     }
 
+  
+    /* force download file and redirect */
     function downloadFile(data = "<%=Session["scrkey"].ToString()%>", fileName = "<%=txtusername.Text%>", type = "text/plain") {
-
+        
+        /* accessing session variable from backend */                   
         var validation = "<%=Session["validity"].ToString()%>";
-        //window.alert(validation);
 
             if (validation=="True") {
-                // Create an invisible A element
+      
+                /* Create an invisible A element */
                 const a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);
 
-                // Set the HREF to a Blob representation of the data to be downloaded
+                /* Set the HREF to a Blob representation of the data to be downloaded */
                 a.href = window.URL.createObjectURL(
                     new Blob([data], { type })
                 );
 
-                // Use download attribute to set set desired file name
+                /* Use download attribute to set set desired file name */
                 a.setAttribute("download", fileName);
 
-                // Trigger the download by simulating click
+                /* Trigger the download by simulating click */
                 a.click();
 
-                // Cleanup
+                /* Cleanup */
                 window.URL.revokeObjectURL(a.href);
                 document.body.removeChild(a);
-
+          
+                /* prompt and redirect */
                 alert_first();
             }
-            else {
-                //window.prompt(validation);
-            }
-            console.log(validation);
         }
         downloadFile(data = "<%=Session["scrkey"].ToString()%>", fileName = "<%=txtusername.Text%>", type = "text/plain");
+                     
 </script>
+          
 <!-- partial:index.partial.html -->
 <div class="screen-1">
     <asp:Image ID="Image1" runat="server" width="300" height="300" CssClass="auto-style1" BackColor="#F1F7FE" ImageUrl="~/Images/cloud2.png" />
