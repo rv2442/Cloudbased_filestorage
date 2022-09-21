@@ -35,6 +35,10 @@ namespace CloudStorage
             this.scrkey = finalString;
             this.usrname = username;
         }
+        
+        /*
+        *   generates a random secret key which is used by the user to reset password
+        */
         public void SecretKey()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@$%#!%&";
@@ -50,6 +54,17 @@ namespace CloudStorage
             Session["scrkey"] = finalString;
         }
 
+
+        /*
+        *   function checks for regex conditions [A-Z,a-z,0-9,@$%#!%&]
+        *   a) 8-15 characters
+        *   b) One lowercase and uppercase character
+        *   c) One Numeric value
+        *   d) One special case character
+        *
+        *   once conditions are met it checks for a unique user name and a unique email id
+        *   if met returns true else returns false
+        */
         public bool ValidatePassword(string password, out string ErrorMessage)
         {
             var input = password;
@@ -141,6 +156,15 @@ namespace CloudStorage
             }
         }
 
+
+        /* This function uses Regex to perform password validation. Must contain 
+         *  a) 8-15 characters
+         *  b) One lowercase and uppercase character
+         *  c) One Numeric value
+         *  d) One special case character
+         *  this function is also called via an object of this class when the user wishes to reset his password
+         *  does not check for username and email uniqueness as password is being reset (account already exists)
+         */
         public bool ValidatePassword_gen(string password, out string ErrorMessage)
         {
             var input = password;
@@ -197,6 +221,13 @@ namespace CloudStorage
         }
 
 
+        /*
+        *   checks regex condition, username, email uniqueness, once conditions met.
+        *   creates session variables for username, passsword, email to access in OTP page
+        *   Sends otp
+        *   
+        *   If conditions not met shosw where the error occured
+        */
         protected void Button1_Click(object sender, EventArgs e)
         {
             bool pass = ValidatePassword(txtpassword.Text, out string y);
@@ -218,6 +249,11 @@ namespace CloudStorage
             }
         }
 
+
+        /* 
+        *   This function checks if the username is valid or not by checking the database
+        *   If not valid it will show the error and prompt the control onto the field where the error occured
+        */
         public void txtusername_TextChanged(object sender, EventArgs e)
         {
             string a = "";
@@ -248,6 +284,10 @@ namespace CloudStorage
             con.Close();
         }
 
+        /* 
+        *   This function checks if the user email is valid or not by checking the database
+        *   If not valid it will show the error and prompt the control onto the field where the error occured
+        */
         protected void txtemail_TextChanged(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
@@ -273,7 +313,7 @@ namespace CloudStorage
 
         protected void txtpassword_TextChanged(object sender, EventArgs e)
         {
-
+            /* null */
         }
 
         public void Button2_Click(object sender, EventArgs e)
@@ -281,6 +321,11 @@ namespace CloudStorage
             /* null */
         }
 
+
+        /* 
+        *   This function generates a Random OTP after signing up to validate the account used
+        *   
+        */
         protected string GenerateRandomOTP(int iOTPLength, string[] saAllowedCharacters)
 
         {
@@ -306,16 +351,24 @@ namespace CloudStorage
             return sOTP;
 
         }
+        
+        /* 
+        *   This function sends the otp to the email id which user has entered while signing up
+        *   saves otp in session variable to use on the OTP page for validation
+        */
         protected void send_otp()
         {
             
                 MailMessage Msg = new MailMessage();
                 string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
                 string sRandomOTP = GenerateRandomOTP(4, saAllowedCharacters);
+                
                 /* Sender's Email address here */
                 Msg.From = new MailAddress("cloudstorage636@gmail.com");
+                
                 /* Recipient's Email address here. */
                 Msg.To.Add(txtemail.Text);
+                
                 Msg.Subject = "Cloud Storage Account Confirmation";
                 Msg.Body = " Your OTP is " + sRandomOTP;
 
