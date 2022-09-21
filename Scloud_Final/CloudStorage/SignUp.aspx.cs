@@ -205,8 +205,6 @@ namespace CloudStorage
             if (pass)
             {
 
-                //string skey = Session["scrkey"].ToString();
-
                 Session["username"] = txtusername.Text;
                 Session["password"] = txtpassword.Text;
                 Session["email"] = txtemail.Text;
@@ -280,7 +278,7 @@ namespace CloudStorage
 
         public void Button2_Click(object sender, EventArgs e)
         {
-            //Response.Redirect("gmail_otp.aspx");
+            /* null */
         }
 
         protected string GenerateRandomOTP(int iOTPLength, string[] saAllowedCharacters)
@@ -314,9 +312,9 @@ namespace CloudStorage
                 MailMessage Msg = new MailMessage();
                 string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
                 string sRandomOTP = GenerateRandomOTP(4, saAllowedCharacters);
-                // Sender's Email address here
+                /* Sender's Email address here */
                 Msg.From = new MailAddress("cloudstorage636@gmail.com");
-                // Recipient's Email address herw.
+                /* Recipient's Email address here. */
                 Msg.To.Add(txtemail.Text);
                 Msg.Subject = "Cloud Storage Account Confirmation";
                 Msg.Body = " Your OTP is " + sRandomOTP;
