@@ -34,7 +34,6 @@ namespace CloudStorage
             }
             this.scrkey = finalString;
             this.usrname = username;
-            // Response.Write(Session["validity"].ToString());
         }
         public void SecretKey()
         {
@@ -58,7 +57,7 @@ namespace CloudStorage
 
             if (string.IsNullOrWhiteSpace(input))
             {
-                //Response.Write("<script>alert('password cant be blank');</script>");
+                /* null */
             }
 
             var hasNumber = new Regex(@"[0-9]+");
