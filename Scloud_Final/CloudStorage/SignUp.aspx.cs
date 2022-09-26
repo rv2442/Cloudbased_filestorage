@@ -257,7 +257,7 @@ namespace CloudStorage
         public void txtusername_TextChanged(object sender, EventArgs e)
         {
             string a = "";
-            SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlConnection con = new SqlConnection("Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME");
             SqlCommand cmd = new SqlCommand("select * from cloudlogin where username = @username", con);
             cmd.Parameters.AddWithValue("@username", txtusername.Text);
             con.Open();
@@ -376,7 +376,7 @@ namespace CloudStorage
                 smtp.Host = "smtp.gmail.com";
                 smtp.Port = 587;
             smtp.UseDefaultCredentials =false;
-            smtp.Credentials = new System.Net.NetworkCredential("cloudstorage636@gmail.com", "cloudstorage123");
+            smtp.Credentials = new System.Net.NetworkCredential("SERVICE_EMAIL", "PASSWORD");
                 smtp.EnableSsl = true;
                 smtp.Send(Msg);
                 Msg = null;
