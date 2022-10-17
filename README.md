@@ -18,7 +18,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 >1. Create a gmail account.
 >2. Open SignUp.aspx.cs and put its email and password instead of "SERVICE_EMAIL", "PASSWORD" 
 >3. Enable Application access on your account (SMTP)
->4. You either need to keep the email logged in where you wish to host SCloud or create and API Service Key and add that to the code
+>4. You either need to keep the email logged in where you wish to host SCloud or enable 2f auth on it and create an application password add that to the code as password.  
 
 * Database:  
 >1. Put your database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME``` use project search to find and replace all.  
@@ -38,6 +38,7 @@ create table Cloudlogin_2FactorAuth(
   status_2f varchar(25) not null
 )
 ```
+__Once the above is done then SCloud must be hosted using Windows IIS 10 and things must work :crossed_fingers:__
 
 ## Demo
 
