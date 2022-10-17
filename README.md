@@ -32,6 +32,12 @@ create table cloudlogin(
   secretkey varchar(25) not null unique
 )
 ```
+```
+create table Cloudlogin_2FactorAuth(
+  username varchar(100) not null unique,
+  status_2f varchar(25) not null
+)
+```
 
 ## Demo
 
