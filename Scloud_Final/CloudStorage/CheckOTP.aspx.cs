@@ -27,7 +27,7 @@ namespace CloudStorage
         protected void Page_Load(object sender, EventArgs e)
         {
             
-            //zSession state is an ASP.NET Core scenario for storage of user data while the user browses a web app
+            /* Session state is an ASP.NET Core scenario for storage of user data while the user browses a web app */
             if (Session["username"] != null)
             {
                 /* Store session's OTP in string "otp" */
