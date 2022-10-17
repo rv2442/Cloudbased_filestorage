@@ -21,7 +21,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 >4. You either need to keep the email logged in where you wish to host SCloud or create and API Service Key and add that to the code
 
 * Database:  
->1. Put your database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME```<br> use project search to find and replace all.  
+>1. Put your database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME``` use project search to find and replace all.  
 >2. The SQL Query below is used to create a table on MSC SQL Server Database where SCloud will store it's user's data.    
 
 ```
