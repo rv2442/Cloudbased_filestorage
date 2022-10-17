@@ -5,7 +5,33 @@ You can also have 2 factor authentication to protect your data by face recogniti
 This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Javascript and Python(Face Recognition).   
 
 
+## Making SCloud work on your Device (Pre-Reqs):  
+* Installations:  
+>1. Visual Studio 2019 Community   
+>2. Python 3.7x or above  
+>3. Windows IIS 10 (I haven't tried this on linux but there must be some way to host it on linux too).  
 
+* Extensions: (Optional as the folder named packages already has it)
+> ASP.NET AJAX Extenstion (NuGET Package)
+
+* Service Email ID:  
+>1. Create a gmail account.
+>2. Open SignUp.aspx.cs and put its email and password instead of "SERVICE_EMAIL", "PASSWORD" 
+>3. Enable Application access on your account (SMTP)
+>4. You either need to keep the email logged in where you wish to host SCloud or create and API Service Key and add that to the code
+
+* Database:  
+>1. Put your database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME```<br> use project search to find and replace all.  
+>2. The SQL Query below is used to create a table on MSC SQL Server Database where SCloud will store it's user's data.    
+
+```
+create table cloudlogin(
+  username varchar(100) not null unique,
+  password varchar(100) not null unique,
+  email varchar(100) not null unique,
+  secretkey varchar(25) not null unique
+)
+```
 
 ## Demo
 
