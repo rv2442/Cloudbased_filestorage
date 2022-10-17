@@ -16,9 +16,8 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 
 * Service Email ID:  
 >1. Create a gmail account.
->2. Open SignUp.aspx.cs and put its email and password instead of "SERVICE_EMAIL", "PASSWORD" 
->3. Enable Application access on your account (SMTP)
->4. You either need to keep the email logged in where you wish to host SCloud or enable 2f auth on it and create an application password add that to the code as password.  
+>2. Open SignUp.aspx.cs and put its email and application password instead of "SERVICE_EMAIL", "PASSWORD" 
+>3. You need to enable 2f auth on it and create an application password add that to the code as password.  
 
 * Database:  
 >1. Put your database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME``` use project search to find and replace all.  
