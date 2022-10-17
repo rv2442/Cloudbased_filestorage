@@ -290,7 +290,7 @@ namespace CloudStorage
         */
         protected void txtemail_TextChanged(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection("Server=199.79.62.22;uid=training;pwd=Training@786;database=cmp");
+            SqlConnection con = new SqlConnection("Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME");
             SqlCommand cmd = new SqlCommand("select * from cloudlogin where email = @email", con);
             cmd.Parameters.AddWithValue("@email", txtemail.Text);
             con.Open();
@@ -364,7 +364,7 @@ namespace CloudStorage
                 string sRandomOTP = GenerateRandomOTP(4, saAllowedCharacters);
                 
                 /* Sender's Email address here */
-                Msg.From = new MailAddress("cloudstorage636@gmail.com");
+                Msg.From = new MailAddress("SERVICE_EMAIL");
                 
                 /* Recipient's Email address here. */
                 Msg.To.Add(txtemail.Text);
