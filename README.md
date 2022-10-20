@@ -19,7 +19,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 >2. Open SignUp.aspx.cs and put its email and application password instead of "SERVICE_EMAIL", "PASSWORD" 
 >3. You need to enable 2f auth on it and create an application password add that to the code as password.  
 
-* Database:  
+* Setting up the Database:  
 >1. Put your MSC SQL Server database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME``` use project search to find and replace all.  
 >2. The SQL Query below is used to create a table on MSC SQL Server Database where SCloud will store it's user's data.    
 
