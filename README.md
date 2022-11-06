@@ -6,7 +6,7 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 
 
 ## Making SCloud work on your Device (Pre-Reqs):  
-* Installations:  
+* Installation:  
 >1. Visual Studio 2019 Community   
 >2. Python 3.7x or above  
 >3. Windows IIS 10 (I haven't tried this on linux but there must be some way to host it on linux too).  
@@ -16,14 +16,14 @@ This project was built in Microsoft Visual Studio Code by using C#(ASP.NET), Jav
 
 * Service Email ID:  
 >1. Create a gmail account.
->2. Open SignUp.aspx.cs and put its email and application password instead of "SERVICE_EMAIL", "PASSWORD" 
+>2. Open SignUp.aspx.cs and put its email and application password instead of "SERVICE_EMAIL", "PASSWORD" (NOTE: Application password is different from the usual password of the user, application password is used by apps to access an email for sending or receiving)  
 >3. You need to enable 2f auth on it and create an application password add that to the code as password.  
 
 * Setting up the Database:  
 >1. Put your MSC SQL Server database credentials wherever you find ```Server=YOUR_SERVER_IP;uid=USER_ID;pwd=PASSWORD;database=DB_NAME``` use project search to find and replace all.  
 >2. The SQL Query below is used to create a table on MSC SQL Server Database where SCloud will store it's user's data.    
 
-```
+```sql
 create table cloudlogin(
   username varchar(100) not null unique,
   password varchar(100) not null unique,
@@ -31,7 +31,7 @@ create table cloudlogin(
   secretkey varchar(25) not null unique
 )
 ```
-```
+```sql
 create table Cloudlogin_2FactorAuth(
   username varchar(100) not null unique,
   status_2f varchar(25) not null
@@ -73,8 +73,10 @@ g)Vms will be placed in an Availability Set.
 
 
 _______________________________________________________________________________________________________________________________________________________________________
+<!--
 ### #Hacktoberfest22
 Move over to discussions for more information
+-->
 
-
-
+>We are looking for open source contributors to help us make the UI better, if you wish to contribute towards this please move over to discussions and tag me (@rv2442) while mentioning about the same.
+>I'll be reviewing your previous works and based on that add you on  the list of collaborators 
