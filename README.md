@@ -79,4 +79,4 @@ Move over to discussions for more information
 -->
 
 >We are looking for open source contributors to help us make the UI better, if you wish to contribute towards this please move over to discussions and tag me (@rv2442) while mentioning about the same.
->I'll be reviewing your previous works and based on that add you on  the list of collaborators 
+>I'll be reviewing your previous works and based on that, will be adding you on the list of collaborators.
